@@ -1,4 +1,4 @@
-name: build and deploy
+name: build prod to ghcr
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm ci
-      - run: npm run build --if-present
+      - run: npm run build --prod
 
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
