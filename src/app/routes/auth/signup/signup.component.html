@@ -1,1 +1,134 @@
-<p>signup works!</p>
+<form
+  [formGroup]="signupForm"
+  class="flex flex-col gap-6 w-[600px] bg-surface p-8 rounded-lg shadow-lg"
+>
+  <div class="flex gap-6">
+      <div class="flex flex-col w-full gap-2">
+        <label for="firtsname" class="text-sm font-medium text-onSurface">Prénom</label>
+        <input
+          id="firtsname"
+          formControlName="firtsname"
+          type="text"
+          placeholder="Saisir votre prénom"
+          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+        />
+        <div
+          class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+          *ngIf="signupForm.get('firtsname')?.invalid && signupForm.get('firtsname')?.touched"
+        >
+          <small *ngIf="signupForm.get('firtsname')?.hasError('required')">
+            Le prénom est requis.
+          </small>
+        </div>
+      </div>
+    
+      <div class="flex flex-col w-full gap-2">
+        <label for="lastname" class="text-sm font-medium text-onSurface">Nom</label>
+        <input
+          id="lastname"
+          formControlName="lastname"
+          type="text"
+          placeholder="Saisir votre nom"
+          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+        />
+        <div
+          class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+          *ngIf="signupForm.get('lastname')?.invalid && signupForm.get('lastname')?.touched"
+        >
+          <small *ngIf="signupForm.get('lastname')?.hasError('required')">
+            Le nom est requis.
+          </small>
+        </div>
+      </div>
+  </div>
+
+  <div class="flex flex-col w-full gap-2">
+    <label for="email" class="text-sm font-medium text-onSurface">Adresse mail</label>
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+      placeholder="Saisir votre adresse mail"
+      class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+    />
+    <div
+      class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+      *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+    >
+      <small *ngIf="signupForm.get('email')?.hasError('required')">
+        L'adresse mail est requise.
+      </small>
+      <small *ngIf="signupForm.get('email')?.hasError('email')">
+        Veuillez saisir une adresse mail valide.
+      </small>
+    </div>
+  </div>
+
+  <div class="flex gap-6">
+      <div class="flex flex-col w-full gap-2">
+        <label for="password" class="text-sm font-medium text-onSurface"
+          >Mot de passe</label
+        >
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          placeholder="Saisir votre mot de passe"
+          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+        />
+        <div
+          class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+          *ngIf="
+          signupForm.get('password')?.invalid && signupForm.get('password')?.touched
+          "
+        >
+          <small *ngIf="signupForm.get('password')?.hasError('required')">
+            Le mot de pass est requis.
+          </small>
+          <small *ngIf="signupForm.get('password')?.hasError('minlength')">
+            Le mot de passe doit faire minimum 6 caractères.
+          </small>
+        </div>
+      </div>
+    
+      <div class="flex flex-col w-full gap-2">
+        <label for="confirmPassword" class="text-sm font-medium text-onSurface"
+          >Mot de passe (confirmation)</label
+        >
+        <input
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          type="password"
+          placeholder="Confirmer votre mot de passe"
+          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+        />
+        <div
+          class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+          *ngIf="
+          signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched
+          "
+        >
+          <small *ngIf="signupForm.get('confirmPassword')?.hasError('required')">
+            La confirmation de mot de pass est requis.
+          </small>
+          <div *ngIf="signupForm.hasError('passwordMismatch')">
+            <small>Les mots de passe ne correspondent pas</small>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <button
+    (click)="onSubmit()"
+    class="w-full mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400"
+  >
+    S'inscrire
+  </button>
+
+  <button
+    (click)="toLogin()"
+    class="w-full text-onSurface rounded-md focus:none disabled:bg-gray-400"
+  >
+    Se connecter
+  </button>
+</form>
