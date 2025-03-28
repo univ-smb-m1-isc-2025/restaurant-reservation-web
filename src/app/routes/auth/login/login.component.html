@@ -1,39 +1,39 @@
 <form
   [formGroup]="loginForm"
-  class="flex flex-col gap-6 w-80 max-w-sm mx-auto bg-white p-8 rounded-lg shadow-lg"
+  class="flex flex-col gap-6 w-[600px] bg-surface p-8 rounded-lg shadow-lg"
 >
-  <div class="flex flex-col gap-2">
-    <label for="email" class="text-sm font-medium text-gray-700">Email</label>
+  <div class="flex flex-col w-full gap-2">
+    <label for="email" class="text-sm font-medium text-onSurface">Adresse mail</label>
     <input
       id="email"
       formControlName="email"
       type="email"
-      placeholder="Enter your email"
-      class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      placeholder="Saisir votre adresse mail"
+      class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
     />
     <div
       class="flex flex-col gap-2 mt-2 text-sm text-red-500"
       *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
     >
       <small *ngIf="loginForm.get('email')?.hasError('required')">
-        Email is required.
+        L'adresse mail est requise.
       </small>
       <small *ngIf="loginForm.get('email')?.hasError('email')">
-        Please enter a valid email address.
+        Veuillez saisir une adresse mail valide.
       </small>
     </div>
   </div>
 
-  <div class="flex flex-col gap-2">
-    <label for="password" class="text-sm font-medium text-gray-700"
-      >Password</label
+  <div class="flex flex-col w-full gap-2">
+    <label for="password" class="text-sm font-medium text-onSurface"
+      >Mot de passe</label
     >
     <input
       id="password"
       formControlName="password"
       type="password"
-      placeholder="Enter your password"
-      class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      placeholder="Saisir votre mot de passe"
+      class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
     />
     <div
       class="flex flex-col gap-2 mt-2 text-sm text-red-500"
@@ -42,18 +42,25 @@
       "
     >
       <small *ngIf="loginForm.get('password')?.hasError('required')">
-        Password is required.
+        Le mot de pass est requis.
       </small>
       <small *ngIf="loginForm.get('password')?.hasError('minlength')">
-        Password must be at least 6 characters long.
+        Le mot de passe doit faire minimum 6 caractères.
       </small>
     </div>
   </div>
 
   <button
     (click)="onSubmit()"
-    class="w-full mt-4 py-3 bg-red-500 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-400"
+    class="w-full mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400"
   >
-    Login
+    Se connecter
+  </button>
+
+  <button
+    (click)="toSignup()"
+    class="w-full text-onSurface rounded-md focus:none disabled:bg-gray-400"
+  >
+    S'inscrire
   </button>
 </form>

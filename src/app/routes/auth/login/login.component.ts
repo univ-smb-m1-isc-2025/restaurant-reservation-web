@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -17,6 +18,7 @@ import { AuthService } from '../auth.service';
 export class LoginComponent implements OnInit {
   fb = inject(FormBuilder);
   authService = inject(AuthService);
+  router = inject(Router);
 
   loginForm!: FormGroup;
 
@@ -31,8 +33,20 @@ export class LoginComponent implements OnInit {
     this.loginForm.markAllAsTouched();
 
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value);
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (response: any) => {
+          console.log(response)
+        },
+        error : (error: any) => {
+          console.error(error)
+        }
+      }); 
     } else {
+      this.loginForm.markAllAsTouched();
     }
+  }
+
+  toSignup(){
+    this.router.navigate(['/signup'])
   }
 }
