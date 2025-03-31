@@ -15,6 +15,6 @@ export class AuthService {
   }
 
   signup(data: SignupRequest) {
-    return this.http.post(`${environment.apiBaseUrl}/auth/signup`, data);
+    return this.http.post(`${environment.apiBaseUrl}/auth/register`, data);
   }
 }

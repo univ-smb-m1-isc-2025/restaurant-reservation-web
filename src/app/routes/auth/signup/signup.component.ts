@@ -26,8 +26,8 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.signupForm = this.fb.group(
       {
-        firtsname: ['', [Validators.required]],
-        lastname: ['', [Validators.required]],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]],
@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
     this.signupForm.markAllAsTouched();
 
     if (this.signupForm.valid) {
-      this.authService.login(this.signupForm.value).subscribe({
+      this.authService.signup(this.signupForm.value).subscribe({
         next: (response: any) => {
           console.log(response)
         },
