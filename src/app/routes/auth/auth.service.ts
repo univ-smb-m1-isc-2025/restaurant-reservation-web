@@ -9,6 +9,7 @@ import { RegisterRequest } from '@/app/models/registerRequest.interface';
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private authenticated = false;
 
   login(data: LoginRequest) {
     return this.http.post(`${environment.apiBaseUrl}/auth/login`, data);
@@ -16,5 +17,13 @@ export class AuthService {
 
   register(data: RegisterRequest) {
     return this.http.post(`${environment.apiBaseUrl}/auth/register`, data);
+  }
+
+  authenticate() {
+    this.authenticated = true;
+  }
+
+  isAuthenticated() {
+    return this.authenticated;
   }
 }
