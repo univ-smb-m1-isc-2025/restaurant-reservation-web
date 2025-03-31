@@ -45,7 +45,7 @@ export class Registercomponent implements OnInit {
       this.authService.register(this.registerForm.value).subscribe({
         next: (response: any) => {
           if (response.status == "success") {
-            console.log("ça passe !!!")
+            this.authService.authenticate()
             this.toRestaurantHub()
           }
         },

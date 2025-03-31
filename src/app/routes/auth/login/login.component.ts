@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
         next: (response: any) => {
           console.log(response)
           if (response.status == "success") {
-            console.log("ça passe !!!")
+            this.authService.authenticate()
             this.toRestaurantHub()
           }
         },
