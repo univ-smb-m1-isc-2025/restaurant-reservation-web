@@ -11,20 +11,20 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'signup',
+  selector: 'register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './signup.component.html',
+  templateUrl: './register.component.html',
 })
-export class SignupComponent implements OnInit {
+export class Registercomponent implements OnInit {
   fb = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);
 
-  signupForm!: FormGroup;
+  registerForm!: FormGroup;
 
   ngOnInit(): void {
-    this.signupForm = this.fb.group(
+    this.registerForm = this.fb.group(
       {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
@@ -39,23 +39,30 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.signupForm.markAllAsTouched();
+    this.registerForm.markAllAsTouched();
 
-    if (this.signupForm.valid) {
-      this.authService.signup(this.signupForm.value).subscribe({
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value).subscribe({
         next: (response: any) => {
-          console.log(response)
+          if (response.status == "success") {
+            console.log("ça passe !!!")
+            this.toRestaurantHub()
+          }
         },
         error : (error: any) => {
           console.error(error)
         }
       }); 
     } else {
-      this.signupForm.markAllAsTouched();
+      this.registerForm.markAllAsTouched();
     }
   }
 
   toLogin(){
     this.router.navigate(['/login'])
+  }
+
+  toRestaurantHub() {
+    this.router.navigate(['/restaurant-hub'])
   }
 }

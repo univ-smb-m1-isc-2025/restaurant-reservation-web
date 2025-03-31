@@ -1,5 +1,5 @@
 <form
-  [formGroup]="signupForm"
+  [formGroup]="registerForm"
   class="flex  m-auto flex-col gap-6 w-full min-w-80 md:w-2/5 md:min-w-[600px] bg-surface p-8 rounded-lg shadow-lg"
 >
   <div class="flex flex-col md:flex-row gap-6">
@@ -14,9 +14,9 @@
         />
         <div
           class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-          *ngIf="signupForm.get('firtsname')?.invalid && signupForm.get('firtsname')?.touched"
+          *ngIf="registerForm.get('firtsname')?.invalid && registerForm.get('firtsname')?.touched"
         >
-          <small *ngIf="signupForm.get('firtsname')?.hasError('required')">
+          <small *ngIf="registerForm.get('firtsname')?.hasError('required')">
             Le prénom est requis.
           </small>
         </div>
@@ -33,9 +33,9 @@
         />
         <div
           class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-          *ngIf="signupForm.get('lastname')?.invalid && signupForm.get('lastname')?.touched"
+          *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched"
         >
-          <small *ngIf="signupForm.get('lastname')?.hasError('required')">
+          <small *ngIf="registerForm.get('lastname')?.hasError('required')">
             Le nom est requis.
           </small>
         </div>
@@ -53,12 +53,12 @@
     />
     <div
       class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-      *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+      *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
     >
-      <small *ngIf="signupForm.get('email')?.hasError('required')">
+      <small *ngIf="registerForm.get('email')?.hasError('required')">
         L'adresse mail est requise.
       </small>
-      <small *ngIf="signupForm.get('email')?.hasError('email')">
+      <small *ngIf="registerForm.get('email')?.hasError('email')">
         Veuillez saisir une adresse mail valide.
       </small>
     </div>
@@ -79,13 +79,13 @@
         <div
           class="flex flex-col gap-2 mt-2 text-sm text-red-500"
           *ngIf="
-          signupForm.get('password')?.invalid && signupForm.get('password')?.touched
+          registerForm.get('password')?.invalid && registerForm.get('password')?.touched
           "
         >
-          <small *ngIf="signupForm.get('password')?.hasError('required')">
+          <small *ngIf="registerForm.get('password')?.hasError('required')">
             Le mot de pass est requis.
           </small>
-          <small *ngIf="signupForm.get('password')?.hasError('minlength')">
+          <small *ngIf="registerForm.get('password')?.hasError('minlength')">
             Le mot de passe doit faire minimum 6 caractères.
           </small>
         </div>
@@ -105,13 +105,13 @@
         <div
           class="flex flex-col gap-2 mt-2 text-sm text-red-500"
           *ngIf="
-          signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched
+          registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched
           "
         >
-          <small *ngIf="signupForm.get('confirmPassword')?.hasError('required')">
+          <small *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
             La confirmation de mot de pass est requis.
           </small>
-          <div *ngIf="signupForm.hasError('passwordMismatch')">
+          <div *ngIf="registerForm.hasError('passwordMismatch')">
             <small>Les mots de passe ne correspondent pas</small>
           </div>
         </div>

@@ -36,6 +36,10 @@ export class LoginComponent implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
           console.log(response)
+          if (response.status == "success") {
+            console.log("ça passe !!!")
+            this.toRestaurantHub()
+          }
         },
         error : (error: any) => {
           console.error(error)
@@ -46,7 +50,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  toRestaurantHub() {
+    this.router.navigate(['/restaurant-hub'])
+  }
+
   toSignup(){
-    this.router.navigate(['/signup'])
+    this.router.navigate(['/register'])
   }
 }
