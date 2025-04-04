@@ -7,7 +7,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from '@/app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +16,8 @@ import { Router } from '@angular/router';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
 })
-export class Registercomponent implements OnInit {
+
+export class RegisterComponent implements OnInit {
   fb = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);
@@ -39,30 +40,26 @@ export class Registercomponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.registerForm.markAllAsTouched();
-
-    if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
-        next: (response: any) => {
-          if (response.status == "success") {
-            this.authService.authenticate()
-            this.toRestaurantHub()
-          }
-        },
-        error : (error: any) => {
-          console.error(error)
-        }
-      }); 
-    } else {
+    if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
+      return;
     }
-  }
 
-  toLogin(){
-    this.router.navigate(['/login'])
+    this.authService.register(this.registerForm.value).subscribe({
+      next: (response: any) => {
+        this.toRestaurantHub()
+      },
+      error : (error: any) => {
+        console.error(error)
+      }
+    });
   }
 
   toRestaurantHub() {
     this.router.navigate(['/restaurant-hub'])
+  }
+
+  toLogin(){
+    this.router.navigate(['/login'])
   }
 }
