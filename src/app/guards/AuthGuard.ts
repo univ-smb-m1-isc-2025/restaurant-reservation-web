@@ -1,15 +1,15 @@
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthService } from "@/app/routes/auth/auth.service";
+import { AuthService } from "@/app/services/auth.service";
+import { AuthResponse } from '../models/user.model';
 
 export const AuthGuard = () => {
-    const auth = inject(AuthService);
+    const authService = inject(AuthService);
     const router = inject(Router);
 
-    if(!auth.isAuthenticated()) {
-        router.navigateByUrl('/login')
-        return false
-    }
-    
-    return true
+    const authenticatedUser: AuthResponse | null = authService.getAuthenticatedUser();
+
+    if (authenticatedUser) return true;
+
+    return router.createUrlTree(['/login']);
 }
