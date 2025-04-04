@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse } from '@/app/models/user.model';
+import { AuthResponse } from '@/app/core/models/user';
 
 const USER_KEY = 'authenticated-user';
 

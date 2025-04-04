@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { environment } from '@/environments/environment';
-import { LoginRequest } from '@/app/models/loginRequest.interface';
-import { RegisterRequest } from '@/app/models/registerRequest.interface';
-import { StorageService } from '@/app/services/storage.service';
-import { AuthResponse } from '@/app/models/user.model';
+import { LoginRequest } from '@/app/core/models/loginRequest';
+import { RegisterRequest } from '@/app/core/models/registerRequest';
+import { StorageService } from '@/app/core/services/storage.service';
+import { AuthResponse } from '@/app/core/models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +19,7 @@ export class AuthService {
     private storageService: StorageService,
   ) {
     const savedUser = this.storageService.getSavedUser();
-    if (savedUser) {
-      this.initializeUser(savedUser);
-    } else {
-      console.error('Utilisateur non trouvé dans le localStorage');
-    }
+    if (savedUser) this.initializeUser(savedUser)
   }
 
   login(data: LoginRequest) {
