@@ -1,14 +1,16 @@
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { passwordMatchValidator } from '@app/validators/passwordMatchValidator';
+import { passwordMatchValidator } from '@/app/core/validators/passwordMatchValidator';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AuthService } from '@/app/services/auth.service';
+import { AuthService } from '@/app/core/services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '@/app/core/services/toast.service';
+import { ToastType } from '@/app/core/models/toast';
 
 @Component({
   selector: 'register',
@@ -17,26 +19,22 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
 })
 
-export class RegisterComponent implements OnInit {
-  fb = inject(FormBuilder);
-  authService = inject(AuthService);
-  router = inject(Router);
-
+export class RegisterComponent {
   registerForm!: FormGroup;
-
-  ngOnInit(): void {
-    this.registerForm = this.fb.group(
-      {
-        firstName: ['', [Validators.required]],
-        lastName: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required]],
-      },
-      {
-        validators: passwordMatchValidator('password', 'confirmPassword')
-      }
-    );
+  
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private formBuilder: FormBuilder,
+    private toastService: ToastService,
+  ) {
+    this.registerForm = this.formBuilder.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+    });
   }
 
   onSubmit(): void {
@@ -47,9 +45,11 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (response: any) => {
+        this.toastService.create('L\inscription a été validée avec succès.', ToastType.SUCCESS);
         this.toRestaurantHub()
       },
       error : (error: any) => {
+        this.toastService.create('Une erreur est survenue lors de l\inscription',ToastType.ERROR);
         console.error(error)
       }
     });

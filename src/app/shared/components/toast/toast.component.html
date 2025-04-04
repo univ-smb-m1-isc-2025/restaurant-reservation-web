@@ -1,0 +1,24 @@
+<div
+  class="fixed flex flex-col gap-2 z-10 top-2 right-1/2 translate-x-1/2 md:right-4 md:top-auto md:bottom-4 md:translate-x-0"
+>
+  <div
+    *ngFor="let toast of toastService.toasts"
+    class="px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer text-white flex items-center gap-2 shadow-lg"
+    [ngClass]="{
+      'bg-green-700': isToastSuccess(toast),
+      'bg-red-600': isToastError(toast),
+      'bg-blue-600': isToastInfo(toast)
+    }"
+    (click)="removeToast(toast)"
+  >
+    <i
+      [ngClass]="{
+        'bx bxs-check-circle': isToastSuccess(toast),
+        'bx bxs-info-circle': isToastInfo(toast),
+        'bx bxs-error-circle': isToastError(toast)
+      }"
+      class="text-lg"
+    ></i>
+    {{ toast.message }}
+  </div>
+</div>

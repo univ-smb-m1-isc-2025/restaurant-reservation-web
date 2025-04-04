@@ -1,13 +1,15 @@
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AuthService } from '@/app/services/auth.service';
+import { AuthService } from '@/app/core/services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '@/app/core/services/toast.service';
+import { ToastType } from '@/app/core/models/toast';
 
 @Component({
   selector: 'login',
@@ -16,15 +18,16 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
 })
 
-export class LoginComponent implements OnInit {
-  fb = inject(FormBuilder);
-  authService = inject(AuthService);
-  router = inject(Router);
-
+export class LoginComponent {
   loginForm!: FormGroup;
 
-  ngOnInit(): void {
-    this.loginForm = this.fb.group({
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private formBuilder: FormBuilder,
+    private toastService: ToastService,
+  ) {
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -38,9 +41,11 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (response: any) => {
+        this.toastService.create('La connexion a été validée avec succès.', ToastType.SUCCESS);
         this.toRestaurantHub()
       },
       error : (error: any) => {
+        this.toastService.create('Une erreur est survenue lors de la connexion',ToastType.ERROR);
         console.error(error)
       }
     });
