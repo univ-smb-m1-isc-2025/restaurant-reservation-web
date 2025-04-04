@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://api.reza.oups.net',
+  apiBaseUrl: 'https://api.reza.oups.net',
 };
