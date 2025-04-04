@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { passwordMatchValidator } from '@/app/core/validators/passwordMatchValidator';
+import { PasswordValidator } from '@/app/core/validators/passwordValidator';
 import {
   FormGroup,
   FormBuilder,
@@ -32,8 +32,12 @@ export class RegisterComponent {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, PasswordValidator.strongPassword()]],
       confirmPassword: ['', [Validators.required]],
+    },
+    { 
+      validators: PasswordValidator.matchPasswords('password', 'confirmPassword'), 
+      updateOn: 'change'
     });
   }
 
