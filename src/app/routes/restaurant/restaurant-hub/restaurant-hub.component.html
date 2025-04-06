@@ -1,3 +1,32 @@
-<div class="flex justify-center align-center text-white">
-    Restaurants
+<div class="h-16 bg-Appbar">
+    <div class="flex justify-between items-center h-full px-4">
+        <h1 class="text-white text-2xl">Reza App</h1>
+        @if(auth) {
+            <div class="flex space-x-4 items-center">
+                <p class="text-white text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
+                <div class="w-8 h-8">
+                    <img src="assets/profile-picture.png" alt="Logout"/>
+                </div>
+            </div>
+        }
+    </div>
+</div> 
+
+<div class="flex flex-col text-white p-8 gap-16">
+    <h1 class="text-4xl">Vos restaurants</h1>
+
+    <div class="flex text-white gap-16 flex-wrap">
+        <div class="flex justify-center items-center h-64 w-64 rounded-3xl bg-surface">
+            <img class="h-16 w-16" src="https://img.icons8.com/win10/512/FFFFFF/plus.png" alt="Ajouter un restaurant"/>
+        </div>
+
+        <div *ngFor="let restaurantResponse of restaurantResponse" class="flex justify-center items-center h-64 w-64 rounded-3xl bg-surface">
+            <div class="text-center">
+                <h2 class="text-lg font-bold">{{ restaurantResponse.restaurant.name }}</h2>
+                <p class="text-sm">{{ restaurantResponse.restaurant.address }}</p>
+                <p class="text-sm">{{ restaurantResponse.restaurant.city }}, {{ restaurantResponse.restaurant.zipcode }}</p>
+                <p class="text-sm">Capacité : {{ restaurantResponse.restaurant.capacity }} couverts</p>
+            </div>
+        </div>
+    </div>
 </div>

@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        Appbar: '#0A0A0A',
         background: '#151515',
         surface: '#202020',
         secondarySurface: '#2B2B2B',
