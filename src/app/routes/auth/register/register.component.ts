@@ -60,7 +60,7 @@ export class RegisterComponent {
   }
 
   toRestaurantHub() {
-    this.router.navigate(['/restaurant-hub'])
+    this.router.navigate(['/restaurants'])
   }
 
   toLogin(){
