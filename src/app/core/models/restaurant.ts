@@ -1,3 +1,11 @@
+export interface RestaurantCreationRequest {
+  name: string;
+  address: string;
+  city: string;
+  zipcode: string;
+  capacity: number;
+}
+
 export interface Restaurant {
     id: number;
     name: string;
