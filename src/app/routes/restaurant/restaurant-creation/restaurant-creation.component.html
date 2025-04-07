@@ -1,0 +1,137 @@
+<div class="h-16 bg-Appbar">
+    <div class="flex justify-between items-center h-full px-8">
+        <h1 class="text-white text-2xl">Reza App</h1>
+        @if(auth) {
+            <div class="flex space-x-4 items-center">
+                <p class="text-white text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
+                <div class="w-8 h-8">
+                    <img src="assets/profile-picture.png" alt="Logout"/>
+                </div>
+            </div>
+        }
+    </div>
+</div> 
+
+<div class="flex flex-col w-full h-[calc(100vh-4rem)] gap-6 lg:flex-row">
+    <div class="flex flex-col justify-center min-w-[300px] w-full h-auto lg:h-full lg:w-1/2 p-8 gap-8">
+        <h1 class="text-2xl text-white">Création d'un restaurant</h1>
+        <form [formGroup]="restaurantForm" class="flex flex-col gap-8 w-full">
+            <div class="flex flex-col w-full gap-2">
+                <label for="name" class="text-sm font-medium text-onSurface">Nom</label>
+                <input
+                    id="name"
+                    formControlName="name"
+                    type="text"
+                    placeholder="Saisir le nom du restaurant"
+                    class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                />
+                <div
+                    class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+                    *ngIf="restaurantForm.get('name')?.invalid && restaurantForm.get('name')?.touched"
+                >
+                    <small *ngIf="restaurantForm.get('name')?.hasError('required')">
+                    Le nom du restaurant est requis.
+                    </small>
+                </div>
+            </div>
+        
+            <div class="flex flex-col w-full gap-2">
+                <label for="address" class="text-sm font-medium text-onSurface">Adresse</label>
+                <input
+                    id="address"
+                    formControlName="address"
+                    type="text"
+                    placeholder="Saisir l'adresse"
+                    class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                />
+                <div
+                    class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+                    *ngIf="restaurantForm.get('address')?.invalid && restaurantForm.get('address')?.touched"
+                >
+                    <small *ngIf="restaurantForm.get('address')?.hasError('required')">
+                    L'adresse est requise.
+                    </small>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-6">
+                <div class="flex flex-col w-full gap-2">
+                    <label for="city" class="text-sm font-medium text-onSurface">Ville</label>
+                    <input
+                        id="city"
+                        formControlName="city"
+                        type="text"
+                        placeholder="Saisir la ville"
+                        class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                    />
+                    <div
+                        class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+                        *ngIf="restaurantForm.get('city')?.invalid && restaurantForm.get('city')?.touched"
+                    >
+                        <small *ngIf="restaurantForm.get('city')?.hasError('required')">
+                        La ville est requise.
+                        </small>
+                    </div>
+                </div>
+    
+                <div class="flex flex-col w-full gap-2">
+                    <label for="zipcode" class="text-sm font-medium text-onSurface">Code postal</label>
+                    <input
+                        id="zipcode"
+                        formControlName="zipcode"
+                        type="number"
+                        placeholder="Saisir le code postal"
+                        class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                    />
+                    <div
+                        class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+                        *ngIf="restaurantForm.get('zipcode')?.invalid && restaurantForm.get('zipcode')?.touched"
+                    >
+                        <small *ngIf="restaurantForm.get('zipcode')?.hasError('required')">
+                        Le code postal est requis.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col w-full gap-2">
+                <label for="capacity" class="text-sm font-medium text-onSurface">Capacité</label>
+                <input
+                    id="capacity"
+                    formControlName="capacity"
+                    type="number"
+                    placeholder="Saisir la capacité"
+                    class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                />
+                <div
+                    class="flex flex-col gap-2 mt-2 text-sm text-red-500"
+                    *ngIf="restaurantForm.get('capacity')?.invalid && restaurantForm.get('capacity')?.touched"
+                >
+                    <small *ngIf="restaurantForm.get('capacity')?.hasError('required')">
+                    La capacité est requise.
+                    </small>
+                </div>
+            </div>
+        </form>
+
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-8">
+            <button
+            (click)="onSubmit()"
+            class="w-full sm:w-2/3 mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400"
+            >
+              Créer le restaurant
+            </button>
+      
+            <button
+              (click)="toRestaurantHub()"
+              class="w-full sm:w-1/3 mt-4 py-3 text-onSurface bg-surface rounded-md focus:none disabled:bg-gray-400"
+            >
+              Retour en arrière
+            </button>
+        </div>
+    </div>
+
+    <div class="hidden lg:block min-w-[300px] w-full h-96 lg:h-full lg:w-1/2">
+        <img class="object-cover w-full h-full" src="assets/auth-image.jpg">
+    </div>
+</div>

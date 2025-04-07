@@ -52,7 +52,7 @@ export class LoginComponent {
   }
 
   toRestaurantHub() {
-    this.router.navigate(['/restaurant-hub'])
+    this.router.navigate(['/restaurants'])
   }
 
   toSignup(){
