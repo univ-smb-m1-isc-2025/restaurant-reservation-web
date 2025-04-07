@@ -44,4 +44,8 @@ export class RestaurantHubComponent {
       },
     });
   }
+
+  toRestaurantCreation() {
+    this.router.navigate(['/restaurants/creation']);
+  }
 }
