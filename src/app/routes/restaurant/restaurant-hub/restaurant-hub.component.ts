@@ -6,7 +6,7 @@ import { AuthResponse } from '@/app/core/models/user';
 import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse } from '@/app/core/models/restaurant';
 import { StorageService } from '@/app/core/services/storage.service';
-import { AppbarComponent } from "@/app/shared/AppBar/appbar.component";
+import { AppbarComponent } from "@/app/shared/components/appbar/appbar.component";
 
 
 @Component({

@@ -7,7 +7,7 @@ import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse } from '@/app/core/models/restaurant';
 import { ToastService } from '@/app/core/services/toast.service';
 import { ToastType } from '@/app/core/models/toast';
-import { AppbarComponent } from "@/app/shared/AppBar/appbar.component";
+import { AppbarComponent } from "@/app/shared/components/appbar/appbar.component";
 import {
   FormGroup,
   FormBuilder,
