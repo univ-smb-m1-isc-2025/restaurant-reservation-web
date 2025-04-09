@@ -28,6 +28,10 @@ export class RegisterComponent {
     private formBuilder: FormBuilder,
     private toastService: ToastService,
   ) {
+    if (this.authService.isAuthenticatedUser()) {
+      this.router.navigate(['/restaurants']);
+    }
+
     this.registerForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],

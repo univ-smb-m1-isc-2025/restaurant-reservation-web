@@ -27,6 +27,10 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private toastService: ToastService,
   ) {
+    if (this.authService.isAuthenticatedUser()) {
+      this.router.navigate(['/restaurants']);
+    }
+
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
