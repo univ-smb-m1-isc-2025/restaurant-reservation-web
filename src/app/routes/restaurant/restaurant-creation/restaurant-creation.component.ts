@@ -7,6 +7,7 @@ import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse } from '@/app/core/models/restaurant';
 import { ToastService } from '@/app/core/services/toast.service';
 import { ToastType } from '@/app/core/models/toast';
+import { AppbarComponent } from "@/app/shared/AppBar/appbar.component";
 import {
   FormGroup,
   FormBuilder,
@@ -18,7 +19,7 @@ import {
 @Component({
   selector: 'restaurant-creation',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AppbarComponent],
   templateUrl: './restaurant-creation.component.html',
 })
 

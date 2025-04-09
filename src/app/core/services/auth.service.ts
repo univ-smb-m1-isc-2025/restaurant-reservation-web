@@ -80,11 +80,12 @@ export class AuthService {
     return this._authenticatedUser;
   }
 
-  private initializeUser(authResponse: AuthResponse) {
-    this._authenticatedUser = authResponse;
+  resetUser() {
+    this._authenticatedUser = null;
+    this.storageService.clean();
   }
 
-  private resetUser() {
-    this._authenticatedUser = null;
+  private initializeUser(authResponse: AuthResponse) {
+    this._authenticatedUser = authResponse;
   }
 }

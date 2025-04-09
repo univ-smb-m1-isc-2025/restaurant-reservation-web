@@ -5,12 +5,13 @@ import { AuthService } from '@/app/core/services/auth.service';
 import { AuthResponse } from '@/app/core/models/user';
 import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse } from '@/app/core/models/restaurant';
+import { AppbarComponent } from "@/app/shared/AppBar/appbar.component";
 
 
 @Component({
   selector: 'restaurant-hub',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AppbarComponent],
   templateUrl: './restaurant-hub.component.html',
 })
 
