@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthResponse } from '@/app/core/models/user';
 
 const USER_KEY = 'authenticated-user';
+const RESTAURANT_KEY = 'selected-restaurant';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,18 @@ export class StorageService {
     return user ? user.token : "";
   }
 
+  saveSelectedRestaurant(restaurant: number): void {
+    window.localStorage.removeItem(RESTAURANT_KEY);
+    window.localStorage.setItem(RESTAURANT_KEY, JSON.stringify(restaurant));
+  }
+  
+  getSelectedRestaurant(): number | null {
+    const restaurant = window.localStorage.getItem(RESTAURANT_KEY);
+    return restaurant ? JSON.parse(restaurant) : null;
+  }
+
   clean(): void {
     window.localStorage.removeItem(USER_KEY);
+    window.localStorage.removeItem(RESTAURANT_KEY);
   }
 }

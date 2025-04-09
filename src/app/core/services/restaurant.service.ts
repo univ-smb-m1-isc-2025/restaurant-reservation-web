@@ -10,10 +10,15 @@ import { StorageService } from '@/app/core/services/storage.service';
 })
 
 export class RestaurantService {
+  private _selectedRestaurant: Number | null = null;
+
   constructor(
     private http: HttpClient,
     private storageService: StorageService,
-  ) {}
+  ) {
+    const selectedRestaurant = this.storageService.getSelectedRestaurant();
+    if (selectedRestaurant) this.initializeRestaurant(selectedRestaurant)
+  }
 
   getRestaurants() {
     const token = this.storageService.getToken();
@@ -64,5 +69,22 @@ export class RestaurantService {
           }
         }),
       );
+  }
+
+  isSelectedRestaurant(): boolean {
+    return !!this._selectedRestaurant;
+  }
+  
+  getSelectedRestaurant(): Number | null {
+    return this._selectedRestaurant;
+  }
+
+  resetRestaurant() {
+    this._selectedRestaurant = null;
+    this.storageService.clean();
+  }
+
+  initializeRestaurant(restaurantResponse: Number) {
+    this._selectedRestaurant = restaurantResponse;
   }
 }
