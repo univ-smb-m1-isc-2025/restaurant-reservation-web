@@ -5,6 +5,7 @@ import { AuthService } from '@/app/core/services/auth.service';
 import { AuthResponse } from '@/app/core/models/user';
 import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse } from '@/app/core/models/restaurant';
+import { StorageService } from '@/app/core/services/storage.service';
 import { AppbarComponent } from "@/app/shared/AppBar/appbar.component";
 
 
@@ -22,6 +23,7 @@ export class RestaurantHubComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
+    private storageService: StorageService,
     private restaurantService: RestaurantService
   ) {
     if (authService.isAuthenticatedUser()) {
@@ -48,5 +50,11 @@ export class RestaurantHubComponent {
 
   toRestaurantCreation() {
     this.router.navigate(['/restaurants/creation']);
+  }
+
+  goToDashboard(restaurant: number) {
+    this.storageService.saveSelectedRestaurant(restaurant);
+    this.restaurantService.initializeRestaurant(restaurant);
+    this.router.navigate(['/dashboard']);
   }
 }
