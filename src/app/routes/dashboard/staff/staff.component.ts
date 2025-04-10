@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '@/app/core/services/auth.service';
 import { AuthResponse } from '@/app/core/models/user';
 import { StorageService } from '@/app/core/services/storage.service';
-import { RestaurantService } from '@/app/core/services/restaurant.service';
-import { RestaurantResponse } from '@/app/core/models/restaurant';
+import { StaffService } from '@/app/core/services/staff.service';
+import { StaffResponse } from '@/app/core/models/staff';
 import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.component";
 
 
@@ -19,12 +19,13 @@ import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.compon
 export class StaffComponent {
   auth: AuthResponse | null = null;
   restaurant: Number | null = null;
-  restaurantResponse: RestaurantResponse[] = [];
+  staffResponse: StaffResponse[] = [];
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private storageService: StorageService,
+    private staffService: StaffService
   ) {
     if (authService.isAuthenticatedUser()) {
       this.auth = this.authService.getAuthenticatedUser();
@@ -37,5 +38,20 @@ export class StaffComponent {
     } else {
       console.error('Utilisateur non présent dans le localStorage');
     }
+  }
+
+  ngOnInit() {
+    this.fetchStaff();
+  }
+
+  fetchStaff() {
+    this.staffService.getRestaurants().subscribe({
+      next: (response) => {
+        this.staffResponse = response.data;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des restaurants:', err);
+      },
+    });
   }
 }
