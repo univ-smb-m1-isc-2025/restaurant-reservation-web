@@ -13,14 +13,6 @@
                     placeholder="Saisir le nom du restaurant"
                     class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
                 />
-                <div
-                    class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-                    *ngIf="restaurantForm.get('name')?.invalid && restaurantForm.get('name')?.touched"
-                >
-                    <small *ngIf="restaurantForm.get('name')?.hasError('required')">
-                    Le nom du restaurant est requis.
-                    </small>
-                </div>
             </div>
         
             <div class="flex flex-col w-full gap-2">
@@ -32,14 +24,6 @@
                     placeholder="Saisir l'adresse"
                     class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
                 />
-                <div
-                    class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-                    *ngIf="restaurantForm.get('address')?.invalid && restaurantForm.get('address')?.touched"
-                >
-                    <small *ngIf="restaurantForm.get('address')?.hasError('required')">
-                    L'adresse est requise.
-                    </small>
-                </div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-6">
@@ -52,14 +36,6 @@
                         placeholder="Saisir la ville"
                         class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
                     />
-                    <div
-                        class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-                        *ngIf="restaurantForm.get('city')?.invalid && restaurantForm.get('city')?.touched"
-                    >
-                        <small *ngIf="restaurantForm.get('city')?.hasError('required')">
-                        La ville est requise.
-                        </small>
-                    </div>
                 </div>
     
                 <div class="flex flex-col w-full gap-2">
@@ -71,14 +47,6 @@
                         placeholder="Saisir le code postal"
                         class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
                     />
-                    <div
-                        class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-                        *ngIf="restaurantForm.get('zipcode')?.invalid && restaurantForm.get('zipcode')?.touched"
-                    >
-                        <small *ngIf="restaurantForm.get('zipcode')?.hasError('required')">
-                        Le code postal est requis.
-                        </small>
-                    </div>
                 </div>
             </div>
 
@@ -91,20 +59,13 @@
                     placeholder="Saisir la capacité"
                     class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
                 />
-                <div
-                    class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-                    *ngIf="restaurantForm.get('capacity')?.invalid && restaurantForm.get('capacity')?.touched"
-                >
-                    <small *ngIf="restaurantForm.get('capacity')?.hasError('required')">
-                    La capacité est requise.
-                    </small>
-                </div>
             </div>
         </form>
 
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-8">
             <button
             (click)="onSubmit()"
+            [disabled]="restaurantForm.invalid"
             class="w-full sm:w-2/3 mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400"
             >
               Créer le restaurant

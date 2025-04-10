@@ -38,53 +38,43 @@
 
         <div class="flex flex-col gap-4 bg-background p-8 rounded-xl">
             <h1 class="text-white text-2xl">Ajouter un employé</h1>
-            <form [formGroup]="employeeForm" class="flex flex-col sm:flex-row gap-8 w-full items-end">
-                <div class="flex flex-col w-full gap-2">
-                    <label for="userEmail" class="text-sm font-medium text-onSurface">Adresse mail</label>
-                    <input
-                    id="userEmail"
-                    formControlName="userEmail"
-                    type="email"
-                    placeholder="Saisir votre adresse mail"
-                    class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
-                    />
-                    <div
-                    class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-                    *ngIf="employeeForm.get('userEmail')?.invalid && employeeForm.get('userEmail')?.touched"
-                    >
-                    <small *ngIf="employeeForm.get('userEmail')?.hasError('required')">
-                        L'adresse mail est requise.
-                    </small>
-                    <small *ngIf="employeeForm.get('userEmail')?.hasError('userEmail')">
-                        Veuillez saisir une adresse mail valide.
-                    </small>
+            <form [formGroup]="employeeForm" class="flex flex-col sm:flex-row gap-8 w-full">
+                <div class="flex gap-4 w-full flex-col sm:flex-row items-end">
+                    <div class="flex flex-col w-full gap-2">
+                        <label for="userEmail" class="text-sm font-medium text-onSurface">Adresse mail</label>
+                        <input
+                        id="userEmail"
+                        formControlName="userEmail"
+                        type="email"
+                        placeholder="Saisir votre adresse mail"
+                        class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                        />
                     </div>
-                </div>
-
-                <div class="flex flex-col w-full gap-2">
-                    <label for="roleId" class="text-sm font-medium text-onSurface">Rôle</label>
-                    <select
-                      id="roleId"
-                      formControlName="roleId"
-                      class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none text-onSecondarySurface"
-                    >
-                      <option value="" disabled selected>Choisir un rôle</option>
-                      <option *ngFor="let role of roles" [value]="role.id">{{ role.roleName }}</option>
-                    </select>
-                    <div class="text-sm text-red-500 mt-2" *ngIf="employeeForm.get('roleId')?.touched && employeeForm.get('roleId')?.hasError('required')">
-                      Le rôle est requis.
+    
+                    <div class="flex flex-col w-full gap-2">
+                        <label for="roleId" class="text-sm font-medium text-onSurface">Rôle</label>
+                        <select
+                          id="roleId"
+                          formControlName="roleId"
+                          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none text-onSecondarySurface"
+                        >
+                          <option value="" disabled selected>Choisir un rôle</option>
+                          <option *ngFor="let role of roles" [value]="role.id">{{ role.roleName }}</option>
+                        </select>
                     </div>
-                </div>
 
-                <button
-                (click)="createEmployee()"
-                class="hidden lg:block w-32 text-2xl h-12 bg-primary text-white rounded-md focus:none disabled:bg-gray-400">
-                    +
-                </button>
+                    <button
+                    (click)="createEmployee()"
+                    [disabled]="employeeForm.invalid"
+                    class="hidden lg:block w-32 text-2xl h-12 bg-primary text-white rounded-md focus:none disabled:bg-gray-400">
+                        +
+                    </button>
+                </div>
             </form>
 
             <button
             (click)="createEmployee()"
+            [disabled]="employeeForm.invalid"
             class="lg:hidden w-full lg:w-64 mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400">
                 Ajouter l'employé
             </button>

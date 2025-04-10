@@ -51,7 +51,7 @@ export class StaffComponent {
     }
 
     this.employeeForm = this.formBuilder.group({
-      userEmail: ['', [Validators.required, Validators.email]],
+      userEmail: ['', [Validators.required]],
       roleId: ['', [Validators.required]],
     });
   }
@@ -83,6 +83,7 @@ export class StaffComponent {
       next: (response) => {
         this.toastService.create(response.message, ToastType.SUCCESS);
         this.fetchStaff();
+        this.employeeForm.reset();
       },
       error : (error) => {
         this.toastService.create(error,ToastType.ERROR);

@@ -18,17 +18,6 @@
           placeholder="Saisir votre adresse mail"
           class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
         />
-        <div
-          class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-          *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-        >
-          <small *ngIf="loginForm.get('email')?.hasError('required')">
-            L'adresse mail est requise.
-          </small>
-          <small *ngIf="loginForm.get('email')?.hasError('email')">
-            Veuillez saisir une adresse mail valide.
-          </small>
-        </div>
       </div>
 
       <div class="flex flex-col w-full gap-2">
@@ -42,25 +31,13 @@
           placeholder="Saisir votre mot de passe"
           class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
         />
-        <div
-          class="flex flex-col gap-2 mt-2 text-sm text-red-500"
-          *ngIf="
-            loginForm.get('password')?.invalid && loginForm.get('password')?.touched
-          "
-        >
-          <small *ngIf="loginForm.get('password')?.hasError('required')">
-            Le mot de pass est requis.
-          </small>
-          <small *ngIf="loginForm.get('password')?.hasError('minlength')">
-            Le mot de passe doit faire minimum 6 caractères.
-          </small>
-        </div>
       </div>
     </form>
 
     <div class="flex flex-col sm:flex-row gap-2 sm:gap-8">
       <button
       (click)="onSubmit()"
+      [disabled]="loginForm.invalid"
       class="w-full sm:w-2/3 mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400"
       >
         Valider la connexion
