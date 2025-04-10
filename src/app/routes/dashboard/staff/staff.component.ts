@@ -5,27 +5,38 @@ import { AuthService } from '@/app/core/services/auth.service';
 import { AuthResponse } from '@/app/core/models/user';
 import { StorageService } from '@/app/core/services/storage.service';
 import { StaffService } from '@/app/core/services/staff.service';
-import { StaffResponse } from '@/app/core/models/staff';
+import { Role, StaffResponse } from '@/app/core/models/staff';
 import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.component";
-
+import { ToastService } from '@/app/core/services/toast.service';
+import { ToastType } from '@/app/core/models/toast';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'staff',
   standalone: true,
-  imports: [CommonModule, SidebarComponent],
+  imports: [CommonModule, SidebarComponent, ReactiveFormsModule],
   templateUrl: './staff.component.html',
 })
 
 export class StaffComponent {
+  employeeForm!: FormGroup;
   auth: AuthResponse | null = null;
   restaurant: Number | null = null;
   staffResponse: StaffResponse[] = [];
+  roles: Role[] = [];
 
   constructor(
     private router: Router,
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private storageService: StorageService,
-    private staffService: StaffService
+    private staffService: StaffService,
+    private toastService: ToastService
   ) {
     if (authService.isAuthenticatedUser()) {
       this.auth = this.authService.getAuthenticatedUser();
@@ -36,12 +47,47 @@ export class StaffComponent {
     if (storageService.getSelectedRestaurant()) {
       this.restaurant = this.storageService.getSelectedRestaurant();
     } else {
-      console.error('Utilisateur non présent dans le localStorage');
+      console.error('Restaurant non présent dans le localStorage');
     }
+
+    this.employeeForm = this.formBuilder.group({
+      userEmail: ['', [Validators.required, Validators.email]],
+      roleId: ['', [Validators.required]],
+    });
   }
 
   ngOnInit() {
     this.fetchStaff();
+    this.fetchRoles();
+  }
+
+  fetchRoles() {
+    this.staffService.getRoles().subscribe({
+      next: (response) => {
+        this.roles = response.data;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des roles:', err);
+      },
+    });
+  }
+
+  createEmployee(): void {
+    if (this.employeeForm.invalid) {
+      this.employeeForm.markAllAsTouched();
+      return;
+    }
+
+    this.staffService.createEmployee(this.employeeForm.value).subscribe({
+      next: (response: any) => {
+        this.toastService.create('L\employé a été ajouté avec succès.', ToastType.SUCCESS);
+        this.fetchStaff();
+      },
+      error : (error: any) => {
+        this.toastService.create('Une erreur est survenue lors de l\'ajout',ToastType.ERROR);
+        console.error(error)
+      }
+    });
   }
 
   fetchStaff() {

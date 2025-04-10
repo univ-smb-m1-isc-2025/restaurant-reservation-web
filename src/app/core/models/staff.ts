@@ -14,3 +14,8 @@ export interface StaffResponse {
   user: User;
   role: Role;
 }  
+
+export interface EmployeeCreationRequest {
+  userEmail: string;
+  roleId: number;
+}
