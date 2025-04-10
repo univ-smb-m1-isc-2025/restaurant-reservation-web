@@ -49,6 +49,14 @@ export class SidebarComponent {
     this.isSidebarVisible = !this.isSidebarVisible;
   }
 
+  navigateReplace(path: string) {
+    this.router.navigate([path], { replaceUrl: true });
+  }
+  
+  isRouteActive(path: string): boolean {
+    return this.router.url === path;
+  }
+
   logout() {
     this.authService.resetUser();
     this.router.navigate(['/login']);
