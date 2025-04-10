@@ -6,17 +6,17 @@ import { AuthResponse } from '@/app/core/models/user';
 import { StorageService } from '@/app/core/services/storage.service';
 import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse } from '@/app/core/models/restaurant';
-import { AppbarComponent } from "@/app/shared/AppBar/appbar.component";
+import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.component";
 
 
 @Component({
-  selector: 'dashboard',
+  selector: 'reservation',
   standalone: true,
-  imports: [CommonModule, AppbarComponent],
-  templateUrl: './dashboard.component.html',
+  imports: [CommonModule, SidebarComponent],
+  templateUrl: './reservation.component.html',
 })
 
-export class DashboardComponent {
+export class ReservationComponent {
   auth: AuthResponse | null = null;
   restaurant: Number | null = null;
   restaurantResponse: RestaurantResponse[] = [];
