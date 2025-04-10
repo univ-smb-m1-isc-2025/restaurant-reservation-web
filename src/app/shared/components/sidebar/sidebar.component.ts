@@ -40,13 +40,27 @@ export class SidebarComponent {
 
   private checkViewport() {
     this.isMobileView = window.innerWidth < 768;
-    if (!this.isMobileView) {
+    if (this.isMobileView) {
+      this.isSidebarVisible = false;
+    } else {
       this.isSidebarVisible = true;
+    }
+
+    if (this.isSidebarVisible) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
     }
   }
 
-  toggleSidebar(): void {
+  toggleSidebar() {
     this.isSidebarVisible = !this.isSidebarVisible;
+
+    if (this.isSidebarVisible) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
   }
 
   navigateReplace(path: string) {
