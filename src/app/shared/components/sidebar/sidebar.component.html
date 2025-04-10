@@ -44,7 +44,7 @@
                     <img class="w-8 h-8" src="assets/profile-picture.webp" alt="Profile"/>
                     <p class="text-white text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
                 </div>
-                <div class="w-4 h-4 cursor-pointer">
+                <div (click)="logout()" class="w-4 h-4 cursor-pointer">
                     <img src="assets/logout-icon.webp" alt="Logout"/>
                 </div>
             </div>
