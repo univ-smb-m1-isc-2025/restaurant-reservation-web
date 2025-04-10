@@ -1,13 +1,13 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule  } from '@angular/router';
 import { AuthService } from '@/app/core/services/auth.service';
 import { AuthResponse } from '@/app/core/models/user';
 
 @Component({
   selector: 'sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.component.html'
 })
 
@@ -15,6 +15,7 @@ export class SidebarComponent {
   auth: AuthResponse | null = null;
   isSidebarVisible = false;
   isMobileView = false;
+  currentRoute: string = '';
 
   constructor(
     private router: Router,
@@ -26,6 +27,10 @@ export class SidebarComponent {
     } else {
       console.error('Utilisateur non présent dans le localStorage');
     }
+
+    this.router.events.subscribe(() => {
+      this.currentRoute = this.router.url;
+    });
   }
 
   @HostListener('window:resize', ['$event'])

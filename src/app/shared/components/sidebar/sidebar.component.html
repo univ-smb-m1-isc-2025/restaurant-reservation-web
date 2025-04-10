@@ -10,10 +10,33 @@
 
     <div *ngIf="isSidebarVisible" class="flex flex-col flex-grow p-8">
         <div class="flex flex-col gap-4 flex-grow">
-            <p class="bg-background p-4 rounded-xl">Services</p>
-            <p class="p-4">Personnel</p>
-            <p class="p-4">Réservations</p>
-        </div>
+            <a
+              routerLink="/dashboard/services"
+              [routerLinkActive]="['bg-background']"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="p-4 rounded-xl transition-colors duration-200"
+            >
+              Services
+            </a>
+          
+            <a
+              routerLink="/dashboard/personnel"
+              [routerLinkActive]="['bg-background']"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="p-4 rounded-xl transition-colors duration-200"
+            >
+              Personnel
+            </a>
+          
+            <a
+              routerLink="/dashboard/reservations"
+              [routerLinkActive]="['bg-background']"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="p-4 rounded-xl transition-colors duration-200"
+            >
+              Réservations
+            </a>
+          </div>          
     
         <div *ngIf="auth">
             <div class="flex items-center justify-between">
