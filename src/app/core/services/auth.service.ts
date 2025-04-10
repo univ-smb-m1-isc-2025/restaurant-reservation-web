@@ -30,7 +30,10 @@ export class AuthService {
         body: data,
       })
       .pipe(
-        catchError((error) => throwError(() => new Error(error.message))),
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
         tap((response: any) => {
           if (response && response.data) {
             const authResponse: AuthResponse = {
@@ -41,9 +44,9 @@ export class AuthService {
             this.storageService.saveUser(authResponse);
             this.initializeUser(authResponse);
           } else {
-            console.error('Aucune donnée utilisateur dans la réponse');
+            throw new Error(response.message);
           }
-        }),
+        })
       );
   }  
 
@@ -55,7 +58,10 @@ export class AuthService {
         body: data,
       })
       .pipe(
-        catchError((error) => throwError(() => new Error(error.message))),
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
         tap((response: any) => {
           if (response && response.data) {
             const authResponse: AuthResponse = {
@@ -66,7 +72,7 @@ export class AuthService {
             this.storageService.saveUser(authResponse);
             this.initializeUser(authResponse);
           } else {
-            console.error('Aucune donnée utilisateur dans la réponse');
+            throw new Error(response.message);
           }
         }),
       );

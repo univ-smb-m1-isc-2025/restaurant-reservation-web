@@ -34,12 +34,13 @@ export class RestaurantService {
         headers: headers,
       })
       .pipe(
-        catchError((error) => throwError(() => new Error(error.message))),
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
         tap((response) => {
-          if (response && response.data) {
-            console.log('Restaurants récupérés avec succès:', response.data);
-          } else {
-            console.error('Aucune donnée reçue');
+          if (response && response.data) {} else {
+            throw new Error(response.message);
           }
         }),
       );
@@ -60,12 +61,13 @@ export class RestaurantService {
         headers: headers,
       })
       .pipe(
-        catchError((error) => throwError(() => new Error(error.message))),
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
         tap((response) => {
-          if (response && response.data) {
-            console.log('Restaurant créé avec succès:', response.data);
-          } else {
-            console.error('Aucune donnée reçue');
+          if (response && response.data) {} else {
+            throw new Error(response.message);
           }
         }),
       );

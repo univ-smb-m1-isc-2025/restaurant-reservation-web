@@ -53,11 +53,11 @@ export class RegisterComponent {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (response: any) => {
-        this.toastService.create('L\inscription a été validée avec succès.', ToastType.SUCCESS);
+        this.toastService.create(response.message, ToastType.SUCCESS);
         this.toRestaurantHub()
       },
       error : (error: any) => {
-        this.toastService.create('Une erreur est survenue lors de l\inscription',ToastType.ERROR);
+        this.toastService.create(error,ToastType.ERROR);
         console.error(error)
       }
     });

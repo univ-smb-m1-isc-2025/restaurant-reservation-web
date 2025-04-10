@@ -66,8 +66,9 @@ export class StaffComponent {
       next: (response) => {
         this.roles = response.data;
       },
-      error: (err) => {
-        console.error('Erreur lors de la récupération des roles:', err);
+      error: (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+        console.error(error)
       },
     });
   }
@@ -79,12 +80,12 @@ export class StaffComponent {
     }
 
     this.staffService.createEmployee(this.employeeForm.value).subscribe({
-      next: (response: any) => {
-        this.toastService.create('L\employé a été ajouté avec succès.', ToastType.SUCCESS);
+      next: (response) => {
+        this.toastService.create(response.message, ToastType.SUCCESS);
         this.fetchStaff();
       },
-      error : (error: any) => {
-        this.toastService.create('Une erreur est survenue lors de l\'ajout',ToastType.ERROR);
+      error : (error) => {
+        this.toastService.create(error,ToastType.ERROR);
         console.error(error)
       }
     });
@@ -95,8 +96,9 @@ export class StaffComponent {
       next: (response) => {
         this.staffResponse = response.data;
       },
-      error: (err) => {
-        console.error('Erreur lors de la récupération des restaurants:', err);
+      error: (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+        console.error(error)
       },
     });
   }

@@ -58,11 +58,12 @@ export class RestaurantCreationComponent {
 
     this.restaurantService.createRestaurant(this.restaurantForm.value).subscribe({
       next: (response) => {
-        this.toastService.create('Le restaurant a été créé avec succès.', ToastType.SUCCESS);
+        this.toastService.create(response.message, ToastType.SUCCESS);
         this.toRestaurantHub();
       },
-      error: (err) => {
-        this.toastService.create('Une erreur est survenue lors de la création du restaurant',ToastType.ERROR);
+      error: (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+        console.error(error)
       },
     });
   }

@@ -56,12 +56,13 @@ export class StaffService {
         headers: headers,
       })
       .pipe(
-        catchError((error) => throwError(() => new Error(error.message))),
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
         tap((response) => {
-          if (response && response.data) {
-            console.log('Personnel récupéré avec succès:', response.data);
-          } else {
-            console.error('Aucune donnée reçue');
+          if (response && response.data) {} else {
+            throw new Error(response.message);
           }
         }),
       );
@@ -76,8 +77,6 @@ export class StaffService {
     });
   
     const url = `${environment.apiBaseUrl}/restaurant/${restaurantId}/staff/create`;
-  
-    console.log('Données de création d\'employé:', data);
 
     return this.http
       .request<{ status: string; message: string; data: StaffResponse[] }>('post', url, {
@@ -85,13 +84,14 @@ export class StaffService {
         body: data,
       })
       .pipe(
-        catchError((error) => throwError(() => new Error(error.message))),
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
         tap((response) => {
           console.log('Réponse de création d\'employé:', response);
-          if (response && response.data) {
-            console.log('Employé créé avec succès:', response.data);
-          } else {
-            console.error('Aucune donnée reçue');
+          if (response && response.data) {} else {
+            throw new Error(response.message);
           }
         }),
       );

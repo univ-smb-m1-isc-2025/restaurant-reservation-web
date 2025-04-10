@@ -44,12 +44,14 @@ export class LoginComponent {
     }
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: (response: any) => {
-        this.toastService.create('La connexion a été validée avec succès.', ToastType.SUCCESS);
+      next: (response) => {
+        console.log(response);
+        this.toastService.create(response.message, ToastType.SUCCESS);
         this.toRestaurantHub()
       },
-      error : (error: any) => {
-        this.toastService.create('Une erreur est survenue lors de la connexion',ToastType.ERROR);
+      error : (error) => {
+
+        this.toastService.create(error,ToastType.ERROR);
         console.error(error)
       }
     });
