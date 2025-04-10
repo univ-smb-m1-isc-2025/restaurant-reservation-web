@@ -1,10 +1,15 @@
 <div class="flex flex-col w-full h-full gap-6 lg:flex-row bg-background">
-  <div class="min-w-[300px] w-full h-96 lg:h-full lg:w-1/2">
+  <div class="hidden lg:block min-w-[300px] w-full h-96 lg:h-full lg:w-1/2">
     <img class="object-cover w-full h-full" src="assets/auth-image.webp">
   </div>
 
-  <div class="flex flex-col justify-center min-w-[300px] w-full h-auto lg:h-full lg:w-1/2 p-8 gap-8">
-    <h1 class="text-2xl text-onBackground">Connexion</h1>
+  <div class="flex flex-col gap-16 justify-center min-w-[300px] w-full h-full lg:w-1/2 p-8">
+    <div class="flex justify-center sm:justify-start w-full">
+      <img src="assets/reza-logo.webp" class="w-48 sm:w-64"/>
+    </div>
+
+    <div class="flex flex-col w-full gap-8">
+      <h1 class="text-2xl text-onBackground text-center sm:text-start">Connexion</h1>
     <form
       [formGroup]="loginForm"
       class="flex flex-col gap-8 w-full"
