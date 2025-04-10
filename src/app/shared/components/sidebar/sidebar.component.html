@@ -1,9 +1,9 @@
-<div class="flex flex-col absolute w-full md:w-72 bg-Appbar text-white transition-all duration-300"
+<div class="flex flex-col absolute w-full md:w-72 bg-Appbar text-onAppbar transition-all duration-300"
      [class.h-full]="isSidebarVisible">
     <div class="flex items-center justify-between px-8 h-16">
-        <h1 class="text-white text-2xl">Reza App</h1>
+        <h1 class="text-onAppbar text-2xl">Reza App</h1>
 
-        <button (click)="toggleSidebar()" class="md:hidden text-white h-4 w-4">
+        <button (click)="toggleSidebar()" class="md:hidden text-onAppbar h-4 w-4">
             <img src="assets/sidebar-icon.webp"/>
         </button>
     </div>
@@ -39,7 +39,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex gap-4 items-center">
                     <img class="w-8 h-8" src="assets/profile-picture.webp" alt="Profile"/>
-                    <p class="text-white text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
+                    <p class="text-onAppbar text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
                 </div>
                 <div (click)="logout()" class="w-4 h-4 cursor-pointer">
                     <img src="assets/logout-icon.webp" alt="Logout"/>

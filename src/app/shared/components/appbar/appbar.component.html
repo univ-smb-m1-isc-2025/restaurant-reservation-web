@@ -1,9 +1,9 @@
 <div class="h-16 bg-Appbar">
     <div class="flex justify-between items-center h-full px-8">
-        <h1 class="text-white text-2xl">Reza App</h1>
+        <h1 class="text-onAppbar text-2xl">Reza App</h1>
         @if(auth) {
             <div class="flex gap-4 items-center">
-                <p class="text-white text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
+                <p class="text-onAppbar text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
                 <div class="w-8 h-8">
                     <img src="assets/profile-picture.webp"/>
                 </div>

@@ -1,12 +1,12 @@
-<div class="flex min-h-screen w-full h-full flex-col sm:flex-row bg-Appbar">
+<div class="flex min-h-screen w-full h-full flex-col sm:flex-row bg-backgroundVariant">
     <sidebar/>   
     <div class="flex flex-col-reverse sm:flex-col mt-16 md:mt-0 md:ml-72 w-full p-8 gap-8 overflow-y-auto">
-        <div class="flex flex-col gap-4 bg-background p-8 rounded-xl">
-            <h1 class="text-white text-2xl">Liste des employés</h1>
+        <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
+            <h1 class="text-onSurface text-2xl">Liste des employés</h1>
 
             <div class="hidden sm:block">
-                <table class="min-w-full text-sm text-left text-white rounded-lg">
-                    <thead class="bg-Appbar text-white text-xs">
+                <table class="min-w-full text-sm text-left text-onSurface rounded-lg">
+                    <thead class="bg-Appbar text-onSurface text-sm">
                         <tr>
                             <th class="px-4 py-3">Nom</th>
                             <th class="px-4 py-3">Prénom</th>
@@ -26,7 +26,7 @@
             </div>
     
             <div class="sm:hidden flex flex-col gap-4">
-                <div *ngFor="let staff of staffResponse" class="flex flex-col gap-4 bg-surface p-4 rounded-lg shadow-sm text-sm text-white">
+                <div *ngFor="let staff of staffResponse" class="flex flex-col gap-4 bg-surface border border-borderColor p-4 rounded-lg shadow-sm text-sm text-onSurface">
                     <div class="flex flex-row gap-4 items-center justify-between">
                         <p class="font-bold"> {{ staff.user.lastName }} {{ staff.user.firstName }}</p>
                         <p class="font-bold"> {{ staff.role.roleName }}</p>
@@ -36,8 +36,8 @@
             </div>  
         </div> 
 
-        <div class="flex flex-col gap-4 bg-background p-8 rounded-xl">
-            <h1 class="text-white text-2xl">Ajouter un employé</h1>
+        <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
+            <h1 class="text-onSurface text-2xl">Ajouter un employé</h1>
             <form [formGroup]="employeeForm" class="flex flex-col sm:flex-row gap-8 w-full">
                 <div class="flex gap-4 w-full flex-col sm:flex-row items-end">
                     <div class="flex flex-col w-full gap-2">
@@ -47,7 +47,7 @@
                         formControlName="userEmail"
                         type="email"
                         placeholder="Saisir votre adresse mail"
-                        class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                        class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
                         />
                     </div>
     
@@ -56,7 +56,7 @@
                         <select
                           id="roleId"
                           formControlName="roleId"
-                          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none text-onSecondarySurface"
+                          class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none text-onSecondarySurface"
                         >
                           <option value="" disabled selected>Choisir un rôle</option>
                           <option *ngFor="let role of roles" [value]="role.id">{{ role.roleName }}</option>
@@ -66,7 +66,7 @@
                     <button
                     (click)="createEmployee()"
                     [disabled]="employeeForm.invalid"
-                    class="hidden lg:block w-32 text-2xl h-12 bg-primary text-white rounded-md focus:none disabled:bg-gray-400">
+                    class="hidden lg:block w-32 text-2xl h-12 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled">
                         +
                     </button>
                 </div>
@@ -75,7 +75,7 @@
             <button
             (click)="createEmployee()"
             [disabled]="employeeForm.invalid"
-            class="lg:hidden w-full lg:w-64 mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400">
+            class="lg:hidden w-full lg:w-64 mt-4 py-3 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled">
                 Ajouter l'employé
             </button>
         </div>

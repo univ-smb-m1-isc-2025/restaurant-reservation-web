@@ -21,10 +21,6 @@ export class ToastComponent {
     return toast.type == ToastType.SUCCESS
   }
 
-  isToastInfo(toast: Toast) {
-    return toast.type == ToastType.INFO
-  }
-
   isToastError(toast: Toast) {
     return toast.type == ToastType.ERROR
   }

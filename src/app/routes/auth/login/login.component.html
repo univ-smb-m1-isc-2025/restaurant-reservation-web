@@ -1,27 +1,27 @@
-<div class="flex flex-col w-full h-full gap-6 lg:flex-row">
+<div class="flex flex-col w-full h-full gap-6 lg:flex-row bg-background">
   <div class="min-w-[300px] w-full h-96 lg:h-full lg:w-1/2">
     <img class="object-cover w-full h-full" src="assets/auth-image.webp">
   </div>
 
   <div class="flex flex-col justify-center min-w-[300px] w-full h-auto lg:h-full lg:w-1/2 p-8 gap-8">
-    <h1 class="text-2xl text-white">Connexion</h1>
+    <h1 class="text-2xl text-onBackground">Connexion</h1>
     <form
       [formGroup]="loginForm"
       class="flex flex-col gap-8 w-full"
     >
       <div class="flex flex-col w-full gap-2">
-        <label for="email" class="text-sm font-medium text-onSurface">Adresse mail</label>
+        <label for="email" class="text-sm font-medium text-onBackground">Adresse mail</label>
         <input
           id="email"
           formControlName="email"
           type="email"
           placeholder="Saisir votre adresse mail"
-          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+          class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
         />
       </div>
 
       <div class="flex flex-col w-full gap-2">
-        <label for="password" class="text-sm font-medium text-onSurface"
+        <label for="password" class="text-sm font-medium text-onBackground"
           >Mot de passe</label
         >
         <input
@@ -29,7 +29,7 @@
           formControlName="password"
           type="password"
           placeholder="Saisir votre mot de passe"
-          class="w-full p-3 bg-secondarySurface border border-gray-500 rounded-md focus:outline-none focus:none text-onSecondarySurface"
+          class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
         />
       </div>
     </form>
@@ -38,14 +38,14 @@
       <button
       (click)="onSubmit()"
       [disabled]="loginForm.invalid"
-      class="w-full sm:w-2/3 mt-4 py-3 bg-primary text-white rounded-md focus:none disabled:bg-gray-400"
+      class="w-full sm:w-2/3 mt-4 py-3 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled"
       >
         Valider la connexion
       </button>
 
       <button
         (click)="toSignup()"
-        class="w-full sm:w-1/3 mt-4 py-3 text-onSurface bg-surface rounded-md focus:none disabled:bg-gray-400"
+        class="w-full sm:w-1/3 mt-4 py-3 text-onSurface bg-surface rounded-md focus:none disabled:bg-disabled"
       >
         Inscription
       </button>
