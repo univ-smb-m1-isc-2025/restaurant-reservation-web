@@ -8,3 +8,136 @@ body{
     align-items: center;
     justify-content: center;
 }
+
+/* ===== BASE STYLES ===== */
+.fc {
+    --dark-bg: #121212;
+    --darker-bg: #0a0a0a;
+    --border-dark: #2a2a2a;
+    --border-light: #3a3a3a;
+    --primary: #348501;
+    --secondary: #2a2a2a;
+    --text-light: #f8f9fa;
+    --text-muted: #adb5bd;
+    
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--dark-bg) !important;
+    color: var(--text-light);
+  }
+  
+  /* ===== CALENDAR STRUCTURE ===== */
+  /* Header toolbar */
+  .fc-toolbar {
+    background-color: var(--darker-bg) !important;
+    border-bottom: 1px solid var(--border-dark) !important;
+    padding: 16px;
+  }
+  
+  /* Column headers (days) */
+  .fc-col-header-cell {
+    background-color: var(--darker-bg) !important;
+    border-color: var(--border-dark) !important;
+    color: var(--text-light);
+    padding: 8px;
+    font-weight: 600;
+  }
+
+  .fc-view-harness, .fc-view-harness-passive {
+    padding: 16px;
+  }
+
+  .fc-scrollgrid, .fc-theme-standard, th {
+    border: none !important;
+  }
+  
+  /* Day cells */
+  .fc-daygrid-day,
+  .fc-timegrid-slot {
+    border-color: var(--border-dark) !important;
+    background-color: var(--dark-bg);
+  }
+  
+  /* Current day highlight */
+  .fc-day-today {
+    background-color: #1e1e1e !important;
+  }
+  
+  /* ===== EVENTS ===== */
+  .fc-event {
+    border: none !important;
+    border-left: 4px solid var(--primary) !important;
+    background-color: #252525 !important;
+    color: var(--text-light) !important;
+    box-shadow: none !important;
+    padding: 4px 8px;
+    margin: 2px 4px;
+    font-size: 0.85em;
+    transition: all 0.2s ease;
+  }
+
+  .fc-event-time, .fc-event-title {
+    color: var(--text-light) !important;
+  }
+
+  /* Closed/exception events */
+  .fc-bg-event {
+    border-left: 4px solid red !important;
+    background-color: #2d2d2d !important;
+    color: var(--text-muted) !important;
+  }
+  
+  /* ===== BUTTONS ===== */
+  .fc-button {
+    background-color: var(--secondary) !important;
+    border: none !important;
+    color: white !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 4px !important;
+    transition: all 0.2s ease;
+  }
+  
+  .fc-button-active {
+    background-color: var(--primary) !important;
+  }
+  
+  /* ===== TIME GRID ===== */
+  .fc-timegrid-axis {
+    background-color: var(--darker-bg) !important;
+    border-color: var(--border-dark) !important;
+    color: var(--text-muted);
+  }
+
+  .fc-scrollgrid {
+    border: 1px solid var(--border-dark) !important;
+  }
+
+  .fc-scrollgrid-section > td {
+    border: none !important;
+  }
+  
+  .fc-scrollgrid-sync-table {
+    border: none !important;
+  }
+  
+  .fc-view-harness {
+    border: none !important;
+    overflow: hidden !important;
+  }
+  
+  /* Correction spécifique pour la bordure du bas */
+  .fc-scrollgrid-section-footer,
+  .fc-scrollgrid-section-footer > td {
+    border: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Correction spécifique pour la bordure de droite */
+  .fc-scroller-liquid-absolute {
+    right: -1px !important; /* Compense la bordure résiduelle */
+  }
+  

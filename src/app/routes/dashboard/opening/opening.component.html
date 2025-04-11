@@ -1,7 +1,13 @@
-<div class="flex min-h-screen w-full h-full flex-col sm:flex-row bg-backgroundVariant">
+<div class="flex min-h-screen w-full h-full flex-col lg:flex-row bg-backgroundVariant">
     <sidebar/>   
     <div class="flex flex-col-reverse sm:flex-col mt-16 md:mt-0 md:ml-72 w-full p-8 gap-8 overflow-y-auto">
         <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
-            <h1 class="text-onSurface text-2xl">Gestion des réservations</h1>
+            <h1 class="text-onSurface text-2xl">Gestion des services</h1>
+            <full-calendar [options]="calendarOptions"></full-calendar>
         </div>
+
+        <button (click)="addTestSlot()" class="text-white">Ajouter un créneau test</button>
+        <button (click)="addTestException()" class="text-white">Ajouter une exception test</button>
+        <button (click)="getFrenchDayName('THURSDAY')" class="text-white">Test anglais -> français</button>
+    </div>
 </div>
