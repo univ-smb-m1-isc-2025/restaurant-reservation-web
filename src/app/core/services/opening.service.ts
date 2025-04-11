@@ -25,7 +25,7 @@ export class OpeningService {
     });
   
     const url = `${environment.apiBaseUrl}/restaurant/${restaurantId}/opening/create`;
-    console.log(data)
+
     return this.http
       .request<{ status: string; message: string; data: RestaurantResponse[] }>('post', url, {
         body: [data],
@@ -47,8 +47,6 @@ export class OpeningService {
   createClosure(openingId: number, dateOfClosure:string) {
     const token = this.storageService.getToken();
     const restaurantId = this.storageService.getSelectedRestaurant();
-  
-    console.log(openingId, dateOfClosure)
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`

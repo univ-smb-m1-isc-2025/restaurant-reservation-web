@@ -165,8 +165,6 @@ export class OpeningComponent {
 
     if(!this.restaurantFull) return
 
-    console.log(this.restaurantFull.openings)
-
     for (let opening of this.restaurantFull.openings) {
       this.addOpeningSlot(opening.id, opening.day, opening.openingTime, opening.closingTime);
 
@@ -182,7 +180,6 @@ export class OpeningComponent {
     this.restaurantService.getRestaurant().subscribe({
       next: (response) => {
         this.restaurantFull = response.data;
-        console.log(this.restaurantFull)
         this.displayOpenings();
       },
       error: (err) => {

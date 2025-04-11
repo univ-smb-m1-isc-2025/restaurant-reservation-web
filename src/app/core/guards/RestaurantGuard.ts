@@ -7,7 +7,6 @@ export const RestaurantGuard = () => {
     const router = inject(Router);
 
     const selectedRestaurant: Number | null = restaurantService.getSelectedRestaurant();
-    console.log('selectedRestaurant', selectedRestaurant);
 
     if (selectedRestaurant) return true;
 
