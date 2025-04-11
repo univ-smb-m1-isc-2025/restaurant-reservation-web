@@ -5,59 +5,55 @@ import { AuthService } from '@/app/core/services/auth.service';
 import { AuthResponse } from '@/app/core/models/user';
 import { StorageService } from '@/app/core/services/storage.service';
 import { RestaurantService } from '@/app/core/services/restaurant.service';
-import { RestaurantResponse } from '@/app/core/models/restaurant';
+import { RestaurantResponse, Restaurant, OpeningCreationRequest } from '@/app/core/models/restaurant';
+import { OpeningService } from '@/app/core/services/opening.service';
 import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.component";
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { ToastService } from '@/app/core/services/toast.service';
+import { ToastType } from '@/app/core/models/toast';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'opening',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, FullCalendarModule],
+  imports: [CommonModule, SidebarComponent, FullCalendarModule, ReactiveFormsModule],
   templateUrl: './opening.component.html',
 })
 
 export class OpeningComponent {
+  openingForm!: FormGroup;
   auth: AuthResponse | null = null;
   restaurant: Number | null = null;
+  restaurantFull: Restaurant | null = null;
   restaurantResponse: RestaurantResponse[] = [];
   private calendarApi: any;
 
-  recurringSlots = [
-    {
-      id: "8",
-      title: 'Ouvert',
-      daysOfWeek: [6],
-      startTime: '12:00',
-      endTime: '14:00',
-      color: '#4caf50',
-    },
-  ];
+  openings: any[] = [];
+  closures: any[] = [];
 
-  exceptions = [
-    {
-      date: '2025-04-26',
-      title: 'Fermé exceptionnel',
-      startTime: '12:00',
-      endTime: '16:00',
-      color: '#ff6b6b'
-    },
-    {
-      date: '2025-05-03',
-      title: 'Fermé pour congés',
-      startTime: '00:00',
-      endTime: '23:59', 
-      color: '#ff6b6b'
-    }
-  ];
+  daysOfWeek = [
+    { value: 'MONDAY', label: 'Lundi' },
+    { value: 'TUESDAY', label: 'Mardi' },
+    { value: 'WEDNESDAY', label: 'Mercredi' },
+    { value: 'THURSDAY', label: 'Jeudi' },
+    { value: 'FRIDAY', label: 'Vendredi' },
+    { value: 'SATURDAY', label: 'Samedi' },
+    { value: 'SUNDAY', label: 'Dimanche' },
+  ];  
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, interactionPlugin],
     initialView: 'timeGridWeek',
     locale: 'fr',
-    slotMinTime: '12:00:00',
+    slotMinTime: '08:00:00',
     slotMaxTime: '24:00:00',
     editable: false,
     events: this.generateEvents(),
@@ -67,11 +63,11 @@ export class OpeningComponent {
     eventBackgroundColor: '#A8DADC',
     eventTextColor: '#1D3557',
     eventBorderColor: '#A8DADC',
-    eventClick: this.handleEventClick.bind(this),
+    eventClick: this.createClosure.bind(this),
     headerToolbar: {
       left: 'prev,next today',
-      center: 'title',
-      right: '',
+      center: '',
+      right: 'title',
     },
     eventDidMount: (info) => {
       if (!this.calendarApi) {
@@ -82,9 +78,12 @@ export class OpeningComponent {
 
   constructor(
     private router: Router,
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private storageService: StorageService,
-    private restaurantService: RestaurantService
+    private restaurantService: RestaurantService,
+    private openingService: OpeningService,
+    private toastService: ToastService
   ) {
     if (authService.isAuthenticatedUser()) {
       this.auth = this.authService.getAuthenticatedUser();
@@ -97,13 +96,21 @@ export class OpeningComponent {
     } else {
       console.error('Restaurant non sélectionné dans le localStorage');
     }
+
+    this.openingForm = this.formBuilder.group({
+      day: ['', [Validators.required]],
+      openingTime: ['', [Validators.required]],
+      closingTime: ['', [Validators.required]],
+    });
+
+    this.fetchRestaurant();
   }
 
   generateEvents(): EventInput[] {
     const events: EventInput[] = [];
-    const exceptionDates = new Set(this.exceptions.map(e => e.date));
-  
-    this.recurringSlots.forEach(slot => {
+    const closureDates = new Set(this.closures.map(e => e.date));
+
+    this.openings.forEach(slot => {
       const startDate = new Date('2025-01-01');
       const endDate = new Date('2025-12-31');
   
@@ -111,23 +118,23 @@ export class OpeningComponent {
         const dateStr = d.toISOString().split('T')[0];
         const dayOfWeek = new Date(dateStr).getDay();
   
-        if (slot.daysOfWeek.includes(dayOfWeek) && !exceptionDates.has(dateStr)) {
+        if (slot.daysOfWeek.includes(dayOfWeek) && !closureDates.has(dateStr)) {
           events.push({
             id: slot.id,
             title: slot.title,
-            start: `${dateStr}T${slot.startTime}:00`,
-            end: `${dateStr}T${slot.endTime}:00`,
+            start: `${dateStr}T${slot.startTime}`,
+            end: `${dateStr}T${slot.endTime}`,
             color: slot.color
           });
         }
       }
     });
   
-    this.exceptions.forEach(exception => {
+    this.closures.forEach(exception => {
       events.push({
         title: exception.title,
-        start: `${exception.date}T${exception.startTime}:00`,
-        end: `${exception.date}T${exception.endTime}:00`,
+        start: `${exception.date}T${exception.startTime}`,
+        end: `${exception.date}T${exception.endTime}`,
         color: exception.color,
         display: 'background'
       });
@@ -136,7 +143,55 @@ export class OpeningComponent {
     return events;
   }
 
-  addRecurringSlot(id: number, day: string, openingTime: string, closingTime: string): void {
+  private resetCalendarEvents(): void {
+    const savedclosures = [...this.closures];
+    
+    this.closures = [];
+    this.calendarOptions.events = [];
+    
+    setTimeout(() => {
+      this.closures = savedclosures;
+      this.calendarOptions.events = this.generateEvents();
+      
+      if (this.calendarApi) {
+        this.calendarApi.refetchEvents();
+      }
+    }, 50);
+  }
+
+  displayOpenings() {
+    this.openings = [];
+    this.closures = [];
+
+    if(!this.restaurantFull) return
+
+    console.log(this.restaurantFull.openings)
+
+    for (let opening of this.restaurantFull.openings) {
+      this.addOpeningSlot(opening.id, opening.day, opening.openingTime, opening.closingTime);
+
+      for (let closure of opening.closures) {
+        this.addClosureSlot(opening.id, closure.closureDate);
+      }
+    }
+
+    this.resetCalendarEvents();
+  }
+
+  fetchRestaurant() {
+    this.restaurantService.getRestaurant().subscribe({
+      next: (response) => {
+        this.restaurantFull = response.data;
+        console.log(this.restaurantFull)
+        this.displayOpenings();
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des restaurants:', err);
+      },
+    });
+  }
+
+  addOpeningSlot(id: number, day: string, openingTime: string, closingTime: string): void {
     const dayMap: Record<string, number> = {
       "SUNDAY": 0, "MONDAY": 1, "TUESDAY": 2, "WEDNESDAY": 3,
       "THURSDAY": 4, "FRIDAY": 5, "SATURDAY": 6
@@ -149,7 +204,7 @@ export class OpeningComponent {
       return;
     }
 
-    const updatedSlots = JSON.parse(JSON.stringify(this.recurringSlots));
+    const updatedSlots = JSON.parse(JSON.stringify(this.openings));
     
     updatedSlots.push({
       id: id.toString(),
@@ -160,28 +215,30 @@ export class OpeningComponent {
       color: '#4caf50'
     });
 
-    this.recurringSlots = updatedSlots;
-    this.resetCalendarEvents();
+    this.openings = updatedSlots;
   }
 
-  private resetCalendarEvents(): void {
-      const savedExceptions = [...this.exceptions];
-      
-      this.exceptions = [];
-      this.calendarOptions.events = [];
-      
-      setTimeout(() => {
-        this.exceptions = savedExceptions;
-        this.calendarOptions.events = this.generateEvents();
-        
-        if (this.calendarApi) {
-          this.calendarApi.refetchEvents();
-        }
-      }, 50);
+  createOpening() {
+    if (this.openingForm.invalid) {
+      this.openingForm.markAllAsTouched();
+      return;
+    }
+
+    this.openingService.createOpening(this.openingForm.value).subscribe({
+      next: (response) => {
+        this.toastService.create(response.message, ToastType.SUCCESS);
+        this.fetchRestaurant();
+        this.openingForm.reset();
+      },
+      error : (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+        console.error(error)
+      }
+    });
   }
 
-  addException(slotId: number, exceptionDate: string): void {
-    const slot = this.recurringSlots.find(s => s.id === slotId.toString());
+  addClosureSlot(slotId: number, closureDate: string): void {
+    const slot = this.openings.find(s => s.id === slotId.toString());
   
     if (!slot) {
       console.error('Créneau non trouvé pour l\'ID:', slotId.toString());
@@ -189,21 +246,20 @@ export class OpeningComponent {
     }
 
     const newException = {
-      date: exceptionDate,
+      date: closureDate,
       title: `Fermé`,
       startTime: slot.startTime,
       endTime: slot.endTime,
       color: '#FFA500'
     };
   
-    this.exceptions.push(newException);
-    this.resetCalendarEvents();
+    this.closures.push(newException);
   }
 
-  handleEventClick(clickInfo: any) {
+  createClosure(clickInfo: any) {
     const eventId = clickInfo.event.id;
     
-    const slot = this.recurringSlots.find(s => s.id === eventId);
+    const slot = this.openings.find(s => s.id === eventId);
     
     if (!slot) {
       console.warn('Créneau non trouvé pour l\'ID:', eventId);
@@ -213,31 +269,15 @@ export class OpeningComponent {
     const eventDate = clickInfo.event.start;
     const formattedDateISO = eventDate.toISOString().split('T')[0];
 
-    console.log('Date', formattedDateISO);
-  }
-
-  getFrenchDayName(englishDayName: string): string {
-    const dayMap: Record<string, string> = {
-      'SUNDAY': 'Dimanche',
-      'MONDAY': 'Lundi',
-      'TUESDAY': 'Mardi',
-      'WEDNESDAY': 'Mercredi',
-      'THURSDAY': 'Jeudi',
-      'FRIDAY': 'Vendredi',
-      'SATURDAY': 'Samedi'
-    };
-    
-    console.log('Jour:', dayMap[englishDayName]);
-
-    return dayMap[englishDayName] || 'UNKNOWN';
-  }
-  
-
-  addTestSlot() {
-    this.addRecurringSlot(9, 'MONDAY', '18:00', '20:00');
-  }
-
-  addTestException() {
-    this.addException(9, '2025-04-14');
+    this.openingService.createClosure(eventId, formattedDateISO).subscribe({
+      next: (response) => {
+        this.toastService.create(response.message,ToastType.SUCCESS);
+        this.fetchRestaurant()
+      },
+      error: (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+        console.error(error)
+      },
+    });
   }
 }

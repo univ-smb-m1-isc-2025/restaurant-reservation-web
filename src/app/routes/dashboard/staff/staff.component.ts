@@ -81,6 +81,7 @@ export class StaffComponent {
 
     this.staffService.createEmployee(this.employeeForm.value).subscribe({
       next: (response) => {
+        console.log(this.employeeForm.value)
         this.toastService.create(response.message, ToastType.SUCCESS);
         this.fetchStaff();
         this.employeeForm.reset();
@@ -93,7 +94,7 @@ export class StaffComponent {
   }
 
   fetchStaff() {
-    this.staffService.getRestaurants().subscribe({
+    this.staffService.getStaff().subscribe({
       next: (response) => {
         this.staffResponse = response.data;
       },

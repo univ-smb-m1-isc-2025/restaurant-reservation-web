@@ -6,8 +6,59 @@
             <full-calendar [options]="calendarOptions"></full-calendar>
         </div>
 
-        <button (click)="addTestSlot()" class="text-white">Ajouter un créneau test</button>
-        <button (click)="addTestException()" class="text-white">Ajouter une exception test</button>
-        <button (click)="getFrenchDayName('THURSDAY')" class="text-white">Test anglais -> français</button>
+        <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
+            <h1 class="text-onSurface text-2xl">Ajouter un créneau d'ouverture</h1>
+            <form [formGroup]="openingForm" class="flex flex-col sm:flex-row gap-8 w-full">
+                <div class="flex gap-4 w-full flex-col sm:flex-row items-end">
+                    <div class="flex flex-col w-full gap-2">
+                        <label for="day" class="text-sm font-medium text-onSurface">Jour</label>
+                        <select
+                          id="day"
+                          formControlName="day"
+                          class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none text-onSecondarySurface"
+                        >
+                          <option value="" disabled selected>Choisir un jour</option>
+                          <option *ngFor="let day of daysOfWeek" [value]="day.value">{{ day.label }}</option>
+                        </select>
+                    </div>  
+    
+                    <div class="flex flex-col w-full gap-2">
+                        <label for="openingTime" class="text-sm font-medium text-onSurface">Heure de début</label>
+                        <input
+                        id="openingTime"
+                        formControlName="openingTime"
+                        type="time"
+                        placeholder="Saisir votre adresse mail"
+                        class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                        />
+                    </div>
+    
+                    <div class="flex flex-col w-full gap-2">
+                        <label for="closingTime" class="text-sm font-medium text-onSurface">Heure de fin</label>
+                        <input
+                        id="closingTime"
+                        formControlName="closingTime"
+                        type="time"
+                        placeholder="Saisir votre adresse mail"
+                        class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
+                        />
+                    </div>
+    
+                    <button
+                    (click)="createOpening()"
+                    [disabled]="openingForm.invalid"
+                    class="hidden lg:block w-32 text-2xl h-12 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled">
+                        +
+                    </button>
+                </div>
+            </form>
+    
+            <button
+            (click)="createOpening()"
+            [disabled]="openingForm.invalid"
+            class="lg:hidden w-full lg:w-64 mt-4 py-3 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled">
+                Ajouter le créneau
+            </button>
+        </div>
     </div>
 </div>
