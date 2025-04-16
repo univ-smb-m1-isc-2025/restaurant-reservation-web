@@ -5,8 +5,9 @@ import { AuthService } from '@/app/core/services/auth.service';
 import { AuthResponse } from '@/app/core/models/user';
 import { StorageService } from '@/app/core/services/storage.service';
 import { RestaurantService } from '@/app/core/services/restaurant.service';
-import { RestaurantResponse, Restaurant, OpeningCreationRequest } from '@/app/core/models/restaurant';
+import { RestaurantResponse, Restaurant } from '@/app/core/models/restaurant';
 import { PlanningService } from '@/app/core/services/planning.service';
+import { ReservationService } from '@/app/core/services/reservation.service';
 import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.component";
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -20,6 +21,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { ReservationResponse } from '@/app/core/models/reservations';
 
 @Component({
   selector: 'planning',
@@ -34,6 +36,7 @@ export class PlanningComponent {
   restaurant: Number | null = null;
   restaurantFull: Restaurant | null = null;
   restaurantResponse: RestaurantResponse[] = [];
+  reservations: ReservationResponse[] = [];
   private calendarApi: any;
 
   openings: any[] = [];
@@ -83,6 +86,7 @@ export class PlanningComponent {
     private storageService: StorageService,
     private restaurantService: RestaurantService,
     private planningService: PlanningService,
+    private reservationService: ReservationService,
     private toastService: ToastService
   ) {
     if (authService.isAuthenticatedUser()) {
@@ -104,6 +108,7 @@ export class PlanningComponent {
     });
 
     this.fetchRestaurant();
+    this.getReservations();
   }
 
   generateEvents(): EventInput[] {
@@ -279,6 +284,17 @@ export class PlanningComponent {
         this.toastService.create(error,ToastType.ERROR);
         console.error(error)
       },
+    });
+  }
+
+  getReservations(): void {
+    this.reservationService.getReservations("4", "2025-04-30").subscribe({
+      next: (response) => {
+        this.reservations = response.data;
+      },
+      error : (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+      }
     });
   }
 }

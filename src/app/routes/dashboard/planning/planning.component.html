@@ -1,11 +1,6 @@
 <div class="flex min-h-screen w-full h-full flex-col lg:flex-row bg-backgroundVariant">
     <sidebar/>   
-    <div class="flex flex-col-reverse sm:flex-col mt-16 md:mt-0 md:ml-72 w-full p-8 gap-8 overflow-y-auto">
-        <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
-            <h1 class="text-onSurface text-2xl">Gestion du Planning</h1>
-            <full-calendar [options]="calendarOptions"></full-calendar>
-        </div>
-
+    <div class="flex flex-col mt-16 md:mt-0 md:ml-72 w-full p-8 gap-8 overflow-y-auto">
         <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
             <h1 class="text-onSurface text-2xl">Ajouter un créneau d'ouverture</h1>
             <form [formGroup]="openingForm" class="flex flex-col sm:flex-row gap-8 w-full">
@@ -60,5 +55,40 @@
                 Ajouter le créneau
             </button>
         </div>
+
+        <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
+            <h1 class="text-onSurface text-2xl">Gestion du Planning</h1>
+            <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+
+        @if(reservations.length > 0) 
+        {
+            <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
+                <h1 class="text-onSurface text-2xl">Réservations planifiées</h1>
+                <div class="flex flex-col gap-4">
+                    <div *ngFor="let reservation of reservations" class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 bg-surface p-4 rounded-lg">
+                        @if (reservation.reservationStatus == "PENDING") {
+                            <div>
+                                <h2 class="text-onSurface text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
+                                <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
+                                <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                            </div>
+                            <div class="flex gap-4">
+                                <button class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">-</button>
+                                <button class="bg-primary w-24 h-12 md:w-12 md:h-8 text-onPrimary text-2xl rounded-lg">+</button>
+                            </div>
+                        }  
+                        
+                        @if (reservation.reservationStatus == "COMPLETED") {
+                            <div>
+                                <h2 class="text-primary text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
+                                <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
+                                <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
