@@ -61,42 +61,69 @@
             <full-calendar [options]="calendarOptions"></full-calendar>
         </div>
 
-        @if(reservations.length > 0) 
+        @if(selectedSlot) 
         {
             <div class="flex flex-col gap-4 bg-surfaceVariant border border-borderColor p-8 rounded-xl">
                 <h1 class="text-onSurface text-2xl">Réservations planifiées</h1>
                 <div class="flex flex-col gap-4">
-                    <div *ngFor="let reservation of reservations" class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 bg-surface p-4 rounded-lg">
-                        @if (reservation.reservationStatus == "PENDING") {
-                            <div>
-                                <h2 class="text-onSurface text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
-                                <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
-                                <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <button (click)="cancelReservation(reservation.id)" class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">-</button>
-                                <button (click)="confirmReservation(reservation.id)" class="bg-primary w-24 h-12 md:w-12 md:h-8 text-onPrimary text-2xl rounded-lg">+</button>
-                            </div>
-                        }  
-
-                        @if (reservation.reservationStatus == "CANCELED") {
-                            <div>
-                                <h2 class="text-error text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
-                                <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
-                                <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
-                            </div>
-                        }  
-                        
-                        @if (reservation.reservationStatus == "COMPLETED") {
-                            <div>
-                                <h2 class="text-primary text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
-                                <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
-                                <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
-                            </div>
-                        } 
-                    </div>
+                    @if(reservations.length > 0) {
+                        <div *ngFor="let reservation of reservations" class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 bg-surface p-4 rounded-lg">
+                            @if (reservation.reservationStatus == "PENDING") {
+                                <div>
+                                    <h2 class="text-onSurface text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
+                                    <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
+                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <button (click)="cancelReservation(reservation.id)" class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">-</button>
+                                    <button (click)="confirmReservation(reservation.id)" class="bg-primary w-24 h-12 md:w-12 md:h-8 text-onPrimary text-2xl rounded-lg">+</button>
+                                </div>
+                            }  
+    
+                            @if (reservation.reservationStatus == "CANCELED") {
+                                <div>
+                                    <h2 class="text-disabled text-lg line-through font-bold ">Réservation n° {{ reservation.id }}</h2>
+                                    <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
+                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                                </div>
+                            }  
+                            
+                            @if (reservation.reservationStatus == "COMPLETED") {
+                                <div>
+                                    <h2 class="text-primary text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
+                                    <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
+                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                                </div>
+                            } 
+                        </div>
+                    } @else {
+                        <p class="text-onSurface text-lg">Aucune réservation planifiée</p>
+                    }
                 </div>
             </div>
         }
     </div>
+
+    <div *ngIf="showModal" class="fixed inset-0 z-10 flex items-center justify-center">
+        <div
+          class="absolute inset-0 backdrop-blur-sm bg-black/40"
+          (click)="closeModal()"
+        ></div>
+      
+        <div
+          class="relative z-10 bg-surface p-6 rounded-xl w-78 max-w-md shadow-xl flex flex-col gap-4"
+          (click)="$event.stopPropagation()"
+        >
+          <h2 class="text-xl font-bold text-onSurface">Créneau sélectionné</h2>
+          <p class="text-onSurface">Le {{ selectedSlot?.date }} de {{ selectedSlot?.startTime }} à {{ selectedSlot?.endTime }}</p>
+          <div class="flex flex-col gap-2">
+            <button (click)="handleCreateClosure()" class="bg-error text-onError p-2 rounded-md">
+              Convertir en fermeture
+            </button>
+            <button (click)="handleGetReservations()" class="bg-primary text-onPrimary p-2 rounded-md">
+              Afficher les réservations
+            </button>
+          </div>
+        </div>
+      </div>      
 </div>

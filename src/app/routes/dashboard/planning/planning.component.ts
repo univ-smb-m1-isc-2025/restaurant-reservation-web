@@ -42,6 +42,9 @@ export class PlanningComponent {
   openings: any[] = [];
   closures: any[] = [];
 
+  selectedSlot: any  | null = null;
+  showModal: boolean = false;
+
   daysOfWeek = [
     { value: 'MONDAY', label: 'Lundi' },
     { value: 'TUESDAY', label: 'Mardi' },
@@ -50,7 +53,7 @@ export class PlanningComponent {
     { value: 'FRIDAY', label: 'Vendredi' },
     { value: 'SATURDAY', label: 'Samedi' },
     { value: 'SUNDAY', label: 'Dimanche' },
-  ];  
+  ];
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, interactionPlugin],
@@ -66,7 +69,7 @@ export class PlanningComponent {
     eventBackgroundColor: '#A8DADC',
     eventTextColor: '#1D3557',
     eventBorderColor: '#A8DADC',
-    eventClick: this.createClosure.bind(this),
+    eventClick: this.onEventClick.bind(this),
     headerToolbar: {
       left: 'prev,next today',
       center: '',
@@ -108,7 +111,6 @@ export class PlanningComponent {
     });
 
     this.fetchRestaurant();
-    this.getReservations();
   }
 
   generateEvents(): EventInput[] {
@@ -116,13 +118,18 @@ export class PlanningComponent {
     const closureDates = new Set(this.closures.map(e => e.date));
 
     this.openings.forEach(slot => {
-      const startDate = new Date('2025-01-01');
-      const endDate = new Date('2025-12-31');
-  
+      const startDate = new Date();
+      startDate.setMonth(0);
+      startDate.setDate(1);
+      startDate.setHours(0, 0, 0, 0);
+      
+      const endDate = new Date(startDate);
+      endDate.setFullYear(endDate.getFullYear() + 1);
+
       for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
         const dateStr = d.toISOString().split('T')[0];
         const dayOfWeek = new Date(dateStr).getDay();
-  
+
         const isClosed = this.closures.some(c => c.id === slot.id && c.date === dateStr);
 
         if (slot.daysOfWeek.includes(dayOfWeek) && !isClosed) {
@@ -136,7 +143,7 @@ export class PlanningComponent {
         }
       }
     });
-  
+
     this.closures.forEach(exception => {
       events.push({
         id: exception.id,
@@ -147,31 +154,58 @@ export class PlanningComponent {
         display: 'background'
       });
     });
-  
+
     return events;
   }
 
   private resetCalendarEvents(): void {
     const savedclosures = [...this.closures];
-    
+
     this.closures = [];
     this.calendarOptions.events = [];
-    
+
     setTimeout(() => {
       this.closures = savedclosures;
       this.calendarOptions.events = this.generateEvents();
-      
+
       if (this.calendarApi) {
         this.calendarApi.refetchEvents();
       }
     }, 50);
   }
 
+  onEventClick(clickInfo: any): void {
+    if (clickInfo.event.display === 'background') {
+      return;
+    }
+
+    const eventId = clickInfo.event.id;
+    const eventDate = clickInfo.event.start;
+
+    const slot = this.openings.find(s => s.id === eventId);
+
+    if (!slot) {
+      console.warn("Créneau non trouvé:", eventId);
+      return;
+    }
+
+    this.selectedSlot = {
+      id: eventId,
+      date: eventDate.toISOString().split("T")[0],
+      fullDate: eventDate,
+      title: slot.title,
+      startTime: slot.startTime.substring(0, 5),
+      endTime: slot.endTime.substring(0, 5),
+    };
+
+    this.showModal = true;
+  }
+
   displayOpenings() {
     this.openings = [];
     this.closures = [];
 
-    if(!this.restaurantFull) return
+    if (!this.restaurantFull) return;
 
     for (let opening of this.restaurantFull.openings) {
       this.addOpeningSlot(opening.id, opening.day, opening.openingTime, opening.closingTime);
@@ -203,14 +237,13 @@ export class PlanningComponent {
     };
 
     const dayNumber = dayMap[day.toUpperCase()];
-    
     if (dayNumber === undefined) {
       console.error('Jour invalide:', day);
       return;
     }
 
     const updatedSlots = JSON.parse(JSON.stringify(this.openings));
-    
+
     updatedSlots.push({
       id: id.toString(),
       title: 'Ouvert',
@@ -235,16 +268,15 @@ export class PlanningComponent {
         this.fetchRestaurant();
         this.openingForm.reset();
       },
-      error : (error) => {
-        this.toastService.create(error,ToastType.ERROR);
-        console.error(error)
+      error: (error) => {
+        this.toastService.create(error, ToastType.ERROR);
       }
     });
   }
 
   addClosureSlot(slotId: number, closureDate: string): void {
     const slot = this.openings.find(s => s.id === slotId.toString());
-  
+
     if (!slot) {
       console.error('Créneau non trouvé pour l\'ID:', slotId.toString());
       return;
@@ -258,65 +290,68 @@ export class PlanningComponent {
       endTime: slot.endTime,
       color: '#FFA500'
     };
-  
+
     this.closures.push(newException);
   }
 
-  createClosure(clickInfo: any) {
-    const eventId = clickInfo.event.id;
-    
-    const slot = this.openings.find(s => s.id === eventId);
-    
-    if (!slot) {
-      console.warn('Créneau non trouvé pour l\'ID:', eventId);
-      return;
-    }
-
-    const eventDate = clickInfo.event.start;
-    const formattedDateISO = eventDate.toISOString().split('T')[0];
-
-    this.planningService.createClosure(eventId, formattedDateISO).subscribe({
-      next: (response) => {
-        this.toastService.create(response.message,ToastType.SUCCESS);
-        this.fetchRestaurant()
-      },
-      error: (error) => {
-        this.toastService.create(error,ToastType.ERROR);
-        console.error(error)
-      },
-    });
-  }
-
-  getReservations(): void {
-    this.reservationService.getReservations("4", "2025-04-30").subscribe({
+  getReservations(openingId: string, date: string): void {
+    this.reservationService.getReservations(openingId, date).subscribe({
       next: (response) => {
         this.reservations = response.data;
+        console.log(this.reservations);
       },
-      error : (error) => {
-        this.toastService.create(error,ToastType.ERROR);
+      error: (error) => {
+        this.toastService.create(error, ToastType.ERROR);
       }
     });
   }
 
-  confirmReservation(reservationId : number): void {
+  confirmReservation(reservationId: number): void {
     this.reservationService.confirmReservation(reservationId.toString()).subscribe({
       next: (response) => {
-        this.toastService.create(response.message,ToastType.SUCCESS);
+        this.toastService.create(response.message, ToastType.SUCCESS);
+        this.getReservations(this.selectedSlot.id, this.selectedSlot.date);
       },
-      error : (error) => {
-        this.toastService.create(error,ToastType.ERROR);
+      error: (error) => {
+        this.toastService.create(error, ToastType.ERROR);
       }
     });
   }
 
-  cancelReservation(reservationId : number): void {
+  cancelReservation(reservationId: number): void {
     this.reservationService.cancelReservation(reservationId.toString()).subscribe({
       next: (response) => {
-        this.toastService.create(response.message,ToastType.SUCCESS);
+        this.toastService.create(response.message, ToastType.SUCCESS);
+        this.getReservations(this.selectedSlot.id, this.selectedSlot.date);
       },
-      error : (error) => {
-        this.toastService.create(error,ToastType.ERROR);
+      error: (error) => {
+        this.toastService.create(error, ToastType.ERROR);
       }
     });
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  handleCreateClosure(): void {
+    const { id, date } = this.selectedSlot;
+    this.planningService.createClosure(id, date).subscribe({
+      next: (res) => {
+        this.toastService.create(res.message, ToastType.SUCCESS);
+        this.fetchRestaurant();
+        this.closeModal();
+      },
+      error: (err) => {
+        this.toastService.create(err, ToastType.ERROR);
+      }
+    });
+  }
+
+  handleGetReservations(): void {
+    console.log(this.selectedSlot);
+    const { id, date } = this.selectedSlot;
+    this.getReservations(id, date);
+    this.closeModal();
   }
 }
