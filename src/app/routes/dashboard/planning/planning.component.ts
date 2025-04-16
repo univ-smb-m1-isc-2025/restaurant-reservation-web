@@ -6,7 +6,7 @@ import { AuthResponse } from '@/app/core/models/user';
 import { StorageService } from '@/app/core/services/storage.service';
 import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse, Restaurant, OpeningCreationRequest } from '@/app/core/models/restaurant';
-import { OpeningService } from '@/app/core/services/opening.service';
+import { PlanningService } from '@/app/core/services/planning.service';
 import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.component";
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -22,13 +22,13 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'opening',
+  selector: 'planning',
   standalone: true,
   imports: [CommonModule, SidebarComponent, FullCalendarModule, ReactiveFormsModule],
-  templateUrl: './opening.component.html',
+  templateUrl: './planning.component.html',
 })
 
-export class OpeningComponent {
+export class PlanningComponent {
   openingForm!: FormGroup;
   auth: AuthResponse | null = null;
   restaurant: Number | null = null;
@@ -82,7 +82,7 @@ export class OpeningComponent {
     private authService: AuthService,
     private storageService: StorageService,
     private restaurantService: RestaurantService,
-    private openingService: OpeningService,
+    private planningService: PlanningService,
     private toastService: ToastService
   ) {
     if (authService.isAuthenticatedUser()) {
@@ -221,7 +221,7 @@ export class OpeningComponent {
       return;
     }
 
-    this.openingService.createOpening(this.openingForm.value).subscribe({
+    this.planningService.createOpening(this.openingForm.value).subscribe({
       next: (response) => {
         this.toastService.create(response.message, ToastType.SUCCESS);
         this.fetchRestaurant();
@@ -266,7 +266,7 @@ export class OpeningComponent {
     const eventDate = clickInfo.event.start;
     const formattedDateISO = eventDate.toISOString().split('T')[0];
 
-    this.openingService.createClosure(eventId, formattedDateISO).subscribe({
+    this.planningService.createClosure(eventId, formattedDateISO).subscribe({
       next: (response) => {
         this.toastService.create(response.message,ToastType.SUCCESS);
         this.fetchRestaurant()

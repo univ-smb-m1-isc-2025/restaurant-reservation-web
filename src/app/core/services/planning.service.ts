@@ -9,7 +9,7 @@ import { StorageService } from '@/app/core/services/storage.service';
   providedIn: 'root',
 })
 
-export class OpeningService {
+export class PlanningService {
 
   constructor(
     private http: HttpClient,
