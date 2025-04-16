@@ -66,7 +66,7 @@
                     <button
                     (click)="createEmployee()"
                     [disabled]="employeeForm.invalid"
-                    class="hidden lg:block w-32 text-2xl h-12 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled">
+                    class="hidden lg:block w-32 text-2xl h-12 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled disabled:cursor-not-allowed">
                         +
                     </button>
                 </div>
@@ -75,7 +75,7 @@
             <button
             (click)="createEmployee()"
             [disabled]="employeeForm.invalid"
-            class="lg:hidden w-full lg:w-64 mt-4 py-3 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled">
+            class="lg:hidden w-full lg:w-64 mt-4 py-3 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled disabled:cursor-not-allowed">
                 Ajouter l'employé
             </button>
         </div>
