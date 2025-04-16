@@ -1,7 +1,7 @@
 <div class="flex flex-col absolute w-full md:w-72 bg-Appbar text-onAppbar transition-all duration-300 z-10"
      [class.h-full]="isSidebarVisible">
     <div class="flex items-center justify-between px-8 h-16">
-        <img src="assets/reza-logo.webp" class="h-8"/>
+        <img (click)="navigateReplace('/restaurants')" src="assets/reza-logo.webp" class="h-8 cursor-pointer"/>
 
         <button (click)="toggleSidebar()" class="md:hidden text-onAppbar h-4 w-4">
             <img src="assets/sidebar-icon.webp"/>
@@ -31,6 +31,15 @@
             </a>
           </div>          
     
+        <div class="mb-8 pt-4">
+          <button
+            (click)="copyReservationLink()"
+            class="w-full text-sm text-onAppbar rounded-xl px-4 py-2 hover:bg-background transition"
+          >
+            Copier le lien de réservation
+          </button>
+        </div>
+          
         <div *ngIf="auth">
             <div class="flex items-center justify-between">
                 <div class="flex gap-4 items-center">

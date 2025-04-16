@@ -1,8 +1,12 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { environment } from '@/environments/environment';
 import { Router, RouterModule  } from '@angular/router';
 import { AuthService } from '@/app/core/services/auth.service';
+import { StorageService } from '@/app/core/services/storage.service';
 import { AuthResponse } from '@/app/core/models/user';
+import { ToastService } from '@/app/core/services/toast.service';
+import { ToastType } from '@/app/core/models/toast';
 
 @Component({
   selector: 'sidebar',
@@ -20,6 +24,8 @@ export class SidebarComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
+    private storageService: StorageService,
+    private toastService: ToastService
   ) {
     this.checkViewport();
     if (authService.isAuthenticatedUser()) {
@@ -74,5 +80,12 @@ export class SidebarComponent {
   logout() {
     this.authService.resetUser();
     this.router.navigate(['/login']);
+  }
+
+  copyReservationLink(): void {
+    const link = `${environment.webBaseUrl}/reservation?restaurant=${this.storageService.getSelectedRestaurant()}`;
+    navigator.clipboard.writeText(link)
+      .then(() => this.toastService.create('Lien copié dans le presse-papier', ToastType.SUCCESS))
+      .catch(() => this.toastService.create('Échec de la copie', ToastType.ERROR));
   }
 }
