@@ -19,6 +19,7 @@ export class SidebarComponent {
   auth: AuthResponse | null = null;
   isSidebarVisible = false;
   isMobileView = false;
+  private scrollY = 0;
   currentRoute: string = '';
 
   constructor(
@@ -63,9 +64,16 @@ export class SidebarComponent {
     this.isSidebarVisible = !this.isSidebarVisible;
 
     if (this.isSidebarVisible) {
-      document.body.classList.add('overflow-hidden');
+      this.scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${this.scrollY}px`;
+      document.body.style.width = '100%';
     } else {
-      document.body.classList.remove('overflow-hidden');
+      // on réactive le scroll
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, this.scrollY);
     }
   }
 
