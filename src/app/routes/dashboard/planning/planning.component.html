@@ -74,8 +74,16 @@
                                 <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
                             </div>
                             <div class="flex gap-4">
-                                <button class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">-</button>
-                                <button class="bg-primary w-24 h-12 md:w-12 md:h-8 text-onPrimary text-2xl rounded-lg">+</button>
+                                <button (click)="cancelReservation(reservation.id)" class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">-</button>
+                                <button (click)="confirmReservation(reservation.id)" class="bg-primary w-24 h-12 md:w-12 md:h-8 text-onPrimary text-2xl rounded-lg">+</button>
+                            </div>
+                        }  
+
+                        @if (reservation.reservationStatus == "CANCELED") {
+                            <div>
+                                <h2 class="text-error text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
+                                <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
+                                <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
                             </div>
                         }  
                         
@@ -85,7 +93,7 @@
                                 <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
                                 <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
                             </div>
-                        }
+                        } 
                     </div>
                 </div>
             </div>

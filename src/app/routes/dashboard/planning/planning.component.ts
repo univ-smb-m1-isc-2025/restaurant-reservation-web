@@ -297,4 +297,26 @@ export class PlanningComponent {
       }
     });
   }
+
+  confirmReservation(reservationId : number): void {
+    this.reservationService.confirmReservation(reservationId.toString()).subscribe({
+      next: (response) => {
+        this.toastService.create(response.message,ToastType.SUCCESS);
+      },
+      error : (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+      }
+    });
+  }
+
+  cancelReservation(reservationId : number): void {
+    this.reservationService.cancelReservation(reservationId.toString()).subscribe({
+      next: (response) => {
+        this.toastService.create(response.message,ToastType.SUCCESS);
+      },
+      error : (error) => {
+        this.toastService.create(error,ToastType.ERROR);
+      }
+    });
+  }
 }

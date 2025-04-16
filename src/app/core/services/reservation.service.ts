@@ -42,4 +42,58 @@ export class ReservationService {
         }),
       );
   }
+
+  confirmReservation(reservationId : string) {
+    const token = this.storageService.getToken();
+    const restaurantId = this.storageService.getSelectedRestaurant();
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  
+    const url = `${environment.apiBaseUrl}/reservation/${restaurantId}/confirm/${reservationId}`;
+  
+    return this.http
+      .request<{ status: string; message: string; data: ReservationResponse[] }>('post', url, {
+        headers: headers,
+      })
+      .pipe(
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
+        tap((response) => {
+          if (response && response.data) {} else {
+            throw new Error(response.message);
+          }
+        }),
+      );
+  }
+  
+  cancelReservation(reservationId : string) {
+    const token = this.storageService.getToken();
+    const restaurantId = this.storageService.getSelectedRestaurant();
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  
+    const url = `${environment.apiBaseUrl}/reservation/${restaurantId}/cancel/${reservationId}`;
+  
+    return this.http
+      .request<{ status: string; message: string; data: ReservationResponse[] }>('delete', url, {
+        headers: headers,
+      })
+      .pipe(
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
+        tap((response) => {
+          if (response && response.data) {} else {
+            throw new Error(response.message);
+          }
+        }),
+      );
+  }
 }
