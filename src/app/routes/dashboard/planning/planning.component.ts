@@ -118,7 +118,9 @@ export class PlanningComponent {
         const dateStr = d.toISOString().split('T')[0];
         const dayOfWeek = new Date(dateStr).getDay();
   
-        if (slot.daysOfWeek.includes(dayOfWeek) && !closureDates.has(dateStr)) {
+        const isClosed = this.closures.some(c => c.id === slot.id && c.date === dateStr);
+
+        if (slot.daysOfWeek.includes(dayOfWeek) && !isClosed) {
           events.push({
             id: slot.id,
             title: slot.title,
@@ -132,6 +134,7 @@ export class PlanningComponent {
   
     this.closures.forEach(exception => {
       events.push({
+        id: exception.id,
         title: exception.title,
         start: `${exception.date}T${exception.startTime}`,
         end: `${exception.date}T${exception.endTime}`,
@@ -243,6 +246,7 @@ export class PlanningComponent {
     }
 
     const newException = {
+      id: slotId.toString(),
       date: closureDate,
       title: `Fermé`,
       startTime: slot.startTime,
