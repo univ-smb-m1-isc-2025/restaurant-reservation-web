@@ -92,7 +92,7 @@ export class SidebarComponent {
 
   copyReservationLink(): void {
     const link = `${environment.webBaseUrl}/reservation?restaurant=${this.storageService.getSelectedRestaurant()}`;
-    const iframeCode = `<iframe width="600" height="750" src="${link}"></iframe>`;
+    const iframeCode = `<iframe width="600" height="750" style="border: none; border-radius: 5px" src="${link}"></iframe>`;
     
     navigator.clipboard.writeText(iframeCode)
       .then(() => this.toastService.create('Code iframe copié dans le presse-papier', ToastType.SUCCESS))
