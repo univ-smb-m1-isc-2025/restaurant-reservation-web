@@ -3,39 +3,41 @@
     <div class="flex items-center justify-between px-8 h-16">
         <img (click)="navigateReplace('/restaurants')" src="assets/reza-logo.webp" class="h-8 cursor-pointer"/>
 
-        <button (click)="toggleSidebar()" class="md:hidden text-onAppbar h-4 w-4">
-            <img src="assets/sidebar-icon.webp"/>
-        </button>
+        <i (click)="toggleSidebar()" class='bx bx-menu md:hidden text-onAppbar text-2xl'></i>
     </div>
 
     <div *ngIf="isSidebarVisible" class="flex flex-col flex-grow p-8">
-        <div class="flex flex-col gap-4 flex-grow">
-            <a
-              (click)="navigateReplace('/dashboard/planning')"
-              [class.bg-background]="isRouteActive('/dashboard/planning')"
-              [class.border]="isRouteActive('/dashboard/planning')"
-              [class.border-borderColor]="isRouteActive('/dashboard/planning')"
-              class="p-4 rounded-xl transition-colors duration-200 hover:bg-background cursor-pointer"
-            >
-              Planning
-            </a>
-          
-            <a
-              (click)="navigateReplace('/dashboard/personnel')"
-              [class.bg-background]="isRouteActive('/dashboard/personnel')"
-              [class.border]="isRouteActive('/dashboard/personnel')"
-              [class.border-borderColor]="isRouteActive('/dashboard/personnel')"
-              class="p-4 rounded-xl transition-colors duration-200 hover:bg-background cursor-pointer"
-            >
-              Personnel
-            </a>
-          </div>          
+      <div class="flex flex-col gap-4 flex-grow">
+        <div
+          (click)="navigateReplace('/dashboard/planning')"
+          [class.bg-background]="isRouteActive('/dashboard/planning')"
+          [class.border]="isRouteActive('/dashboard/planning')"
+          [class.border-borderColor]="isRouteActive('/dashboard/planning')"
+          class="p-4 rounded-xl transition-colors duration-200 hover:bg-background cursor-pointer flex items-center gap-4"
+        >
+          <i class="bx bx-calendar text-onBackground text-2xl"></i>
+          <span>Planning</span>
+        </div>
+      
+        <div
+          (click)="navigateReplace('/dashboard/personnel')"
+          [class.bg-background]="isRouteActive('/dashboard/personnel')"
+          [class.border]="isRouteActive('/dashboard/personnel')"
+          [class.border-borderColor]="isRouteActive('/dashboard/personnel')"
+          class="p-4 rounded-xl transition-colors duration-200 hover:bg-background cursor-pointer flex items-center gap-4"
+        >
+          <i class='bx bxs-user-rectangle text-onBackground text-2xl'></i>
+          <span>Personnel</span>
+        </div>
+      </div>
+            
     
         <div class="mb-8 pt-4">
           <button
             (click)="copyReservationLink()"
             class="w-full text-sm text-onAppbar rounded-xl px-4 py-2 hover:bg-background transition"
           >
+            <i class='bx bx-copy text-onBackground'></i>
             Copier le lien d'intégration de la page de réservation
           </button>
         </div>
@@ -46,9 +48,7 @@
                     <img class="w-8 h-8" src="assets/profile-picture.webp" alt="Profile"/>
                     <p class="text-onAppbar text-sm">{{ auth.user.firstName }} {{ auth.user.lastName }}</p>
                 </div>
-                <div (click)="logout()" class="w-4 h-4 cursor-pointer">
-                    <img src="assets/logout-icon.webp" alt="Logout"/>
-                </div>
+                <i (click)="logout()" class='bx bx-log-out text-onBackground text-2xl cursor-pointer'></i>
             </div>
         </div>
     </div>

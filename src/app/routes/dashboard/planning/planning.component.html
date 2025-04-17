@@ -75,8 +75,13 @@
                                     <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.email }}</p>
                                 </div>
                                 <div class="flex gap-4">
-                                    <button (click)="cancelReservation(reservation.id)" class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">-</button>
-                                    <button (click)="confirmReservation(reservation.id)" class="bg-primary w-24 h-12 md:w-12 md:h-8 text-onPrimary text-2xl rounded-lg">+</button>
+                                    <button (click)="cancelReservation(reservation.id)" class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">
+                                        <i class='bx bx-trash text-onError'></i>
+                                    </button>
+
+                                    <button (click)="confirmReservation(reservation.id)" class="bg-primary w-24 h-12 md:w-12 md:h-8 text-onPrimary text-2xl rounded-lg">
+                                        <i class='bx bx-check text-onSuccess'></i>
+                                    </button>
                                 </div>
                             }  
     
