@@ -7,7 +7,8 @@ import { RestaurantCreationComponent } from './routes/restaurant/restaurant-crea
 import { RestaurantGuard } from './core/guards/RestaurantGuard';
 import { PlanningComponent } from './routes/dashboard/planning/planning.component';
 import { StaffComponent } from './routes/dashboard/staff/staff.component';
-import { ReservationComponent } from './routes/reservation/reservation.component';
+import { ReservationComponent } from './routes/reservation/creation/reservation.component';
+import { ReservationAnnulationComponent } from './routes/reservation/annulation/reservation-annulation.component';
 
 export const routes: Routes = [
     { path: '',   redirectTo: '/restaurants', pathMatch: 'full' },
@@ -18,5 +19,6 @@ export const routes: Routes = [
     { path: 'dashboard',   redirectTo: '/dashboard/planning', pathMatch: 'full' },
     { path: 'dashboard/planning', canActivate: [AuthGuard, RestaurantGuard], component: PlanningComponent },
     { path: 'dashboard/personnel', canActivate: [AuthGuard, RestaurantGuard], component: StaffComponent },
-    { path: 'reservation', component: ReservationComponent }
+    { path: 'reservation', component: ReservationComponent },
+    { path: 'reservation/annulation', component: ReservationAnnulationComponent }
 ];
