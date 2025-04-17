@@ -43,6 +43,24 @@ export class ReservationService {
       );
   }
 
+  getReservation(reservationId : string) {
+    const url = `${environment.apiBaseUrl}/reservation/${reservationId}`;
+  
+    return this.http
+      .request<{ status: string; message: string; data: ReservationResponse }>('get', url, {})
+      .pipe(
+        catchError((error) => {
+          const errorMessage = error.error?.message || "Une erreur est survenue";
+          return throwError(() => new Error(errorMessage));
+        }),
+        tap((response) => {
+          if (response && response.data) {} else {
+            throw new Error(response.message);
+          }
+        }),
+      );
+  }
+
   createReservation(restaurantId: string, data: CreateReservationRequest) {
     const url = `${environment.apiBaseUrl}/reservation/${restaurantId}/create`;
   

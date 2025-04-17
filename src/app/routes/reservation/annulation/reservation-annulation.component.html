@@ -5,7 +5,7 @@
       </div>
   
       <div class="flex flex-col w-full gap-8">
-        <h1 class="text-2xl text-onBackground text-center sm:text-start">Annuler ma réservation</h1>
+        <h1 class="text-2xl text-onBackground text-center sm:text-start">Réservation du {{this.getReservationDate()}} à {{this.getReservationHour()}} pour {{this.reservation?.nbGuests}} personne(s)</h1>
   
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-8">
           <button
