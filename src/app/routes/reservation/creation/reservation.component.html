@@ -1,0 +1,60 @@
+<div class="flex justify-center items-center w-full min-h-screen p-8 bg-backgroundVariant">  
+    <div class="flex flex-col gap-16 justify-center min-w-[300px] w-full lg:w-1/2 p-8 bg-surfaceVariant border border-borderColor rounded-xl">
+      <div class="flex justify-center sm:justify-start w-full">
+        <img src="assets/reza-logo.webp" class="w-48 sm:w-64"/>
+      </div>
+  
+      <div class="flex flex-col w-full gap-8">
+        <h1 class="text-2xl text-onBackground text-center sm:text-start">Réserver une table</h1>
+      <form
+        [formGroup]="reservationForm"
+        class="flex flex-col gap-8 w-full"
+      >
+        <div class="flex flex-col w-full gap-2">
+          <label for="reservationDate" class="text-sm font-medium text-onBackground">Date</label>
+          <input
+            id="reservationDate"
+            formControlName="reservationDate"
+            type="datetime-local"
+            placeholder="Saisir votre adresse mail"
+            class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
+          />
+        </div>
+
+        <div class="flex flex-col w-full gap-2">
+          <label for="email" class="text-sm font-medium text-onBackground">Adresse mail</label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            placeholder="Saisir votre adresse mail"
+            class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
+          />
+        </div>
+
+        <div class="flex flex-col w-full gap-2">
+          <label for="nbGuests" class="text-sm font-medium text-onBackground">Nombre de personnes</label>
+          <input
+            id="nbGuests"
+            formControlName="nbGuests"
+            type="number"
+            placeholder="Saisir nombre de personnes"
+            class="w-full p-3 bg-surface text-onSurface border border-borderColor rounded-md focus:outline-none focus:none text-onSecondarySurface"
+          />
+        </div>
+      </form>
+  
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-8">
+        <button
+        (click)="onSubmit()"
+        [disabled]="reservationForm.invalid"
+        class="w-full mt-4 py-3 bg-primary text-onPrimary rounded-md focus:none disabled:bg-disabled disabled:cursor-not-allowed"
+        >
+          Valider la réservation
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+  

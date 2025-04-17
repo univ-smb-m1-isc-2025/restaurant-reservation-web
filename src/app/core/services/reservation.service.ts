@@ -43,20 +43,12 @@ export class ReservationService {
       );
   }
 
-  createReservation(data: CreateReservationRequest) {
-    const token = this.storageService.getToken();
-    const restaurantId = this.storageService.getSelectedRestaurant();
-  
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  
+  createReservation(restaurantId: string, data: CreateReservationRequest) {
     const url = `${environment.apiBaseUrl}/reservation/${restaurantId}/create`;
   
     return this.http
       .request<{ status: string; message: string; data: CreateReservationResponse }>('post', url, {
-        body: data,
-        headers: headers,
+        body: data
       })
       .pipe(
         catchError((error) => {
@@ -73,13 +65,12 @@ export class ReservationService {
 
   confirmReservation(reservationId : string) {
     const token = this.storageService.getToken();
-    const restaurantId = this.storageService.getSelectedRestaurant();
   
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
   
-    const url = `${environment.apiBaseUrl}/reservation/${restaurantId}/confirm/${reservationId}`;
+    const url = `${environment.apiBaseUrl}/reservation/confirm/${reservationId}`;
   
     return this.http
       .request<{ status: string; message: string; data: ReservationResponse[] }>('post', url, {
@@ -100,13 +91,12 @@ export class ReservationService {
   
   cancelReservation(reservationId : string) {
     const token = this.storageService.getToken();
-    const restaurantId = this.storageService.getSelectedRestaurant();
   
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
   
-    const url = `${environment.apiBaseUrl}/reservation/${restaurantId}/cancel/${reservationId}`;
+    const url = `${environment.apiBaseUrl}/reservation/cancel/${reservationId}`;
   
     return this.http
       .request<{ status: string; message: string; data: ReservationResponse[] }>('delete', url, {
