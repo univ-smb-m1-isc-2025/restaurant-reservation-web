@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthResponse } from '@/app/core/models/user';
+import { Role } from '../models/staff';
 
 const USER_KEY = 'authenticated-user';
+const ROLE_KEY = 'user-role';
 const RESTAURANT_KEY = 'selected-restaurant';
 
 @Injectable({
@@ -36,8 +38,19 @@ export class StorageService {
     return restaurant ? JSON.parse(restaurant) : null;
   }
 
+  saveRole(role: Role): void {
+    window.localStorage.removeItem(ROLE_KEY);
+    window.localStorage.setItem(ROLE_KEY, JSON.stringify(role));
+  }
+  
+  getSavedRole(): Role | null {
+    const role = window.localStorage.getItem(ROLE_KEY);
+    return role ? JSON.parse(role) : null;
+  }
+
   clean(): void {
     window.localStorage.removeItem(USER_KEY);
+    window.localStorage.removeItem(ROLE_KEY);
     window.localStorage.removeItem(RESTAURANT_KEY);
   }
 }

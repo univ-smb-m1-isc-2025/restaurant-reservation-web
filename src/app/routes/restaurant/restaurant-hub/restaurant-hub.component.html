@@ -8,7 +8,7 @@
             <i class='bx bx-plus-circle text-onSurface text-4xl'></i>
         </div>
 
-        <div *ngFor="let restaurantResponse of restaurantResponse" (click)="goToDashboard(restaurantResponse.restaurant.id)" class="flex flex-col justify-center items-center h-48 w-64 rounded-3xl bg-surface border border-borderColor gap-4 cursor-pointer">
+        <div *ngFor="let restaurantResponse of restaurantResponse" (click)="goToDashboard(restaurantResponse.restaurant.id, restaurantResponse.role)" class="flex flex-col justify-center items-center h-48 w-64 rounded-3xl bg-surface border border-borderColor gap-4 cursor-pointer">
             <h2 class="text-lg font-bold">{{ restaurantResponse.restaurant.name }}</h2>
             
             <div class="text-center">

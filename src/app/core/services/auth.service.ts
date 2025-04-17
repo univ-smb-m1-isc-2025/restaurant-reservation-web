@@ -6,6 +6,7 @@ import { LoginRequest } from '@/app/core/models/loginRequest';
 import { RegisterRequest } from '@/app/core/models/registerRequest';
 import { StorageService } from '@/app/core/services/storage.service';
 import { AuthResponse } from '@/app/core/models/user';
+import { Role } from '../models/staff';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ import { AuthResponse } from '@/app/core/models/user';
 
 export class AuthService {
   private _authenticatedUser: AuthResponse | null = null;
+  private _authenticatedUserRole: Role | null = null;
 
   constructor(
     private http: HttpClient,
@@ -20,6 +22,9 @@ export class AuthService {
   ) {
     const savedUser = this.storageService.getSavedUser();
     if (savedUser) this.initializeUser(savedUser)
+
+    const savedRole = this.storageService.getSavedRole();
+    if (savedRole) this.initializeRole(savedRole)
   }
 
   login(data: LoginRequest) {
@@ -86,12 +91,24 @@ export class AuthService {
     return this._authenticatedUser;
   }
 
+  getAuthenticatedUserRole(): Role | null {
+    return this._authenticatedUserRole;
+  }
+
+  isAdmin(): Boolean {
+    return this._authenticatedUserRole?.roleName != "EMPLOYEE";
+  }
+
   resetUser() {
     this._authenticatedUser = null;
     this.storageService.clean();
   }
 
-  private initializeUser(authResponse: AuthResponse) {
+  initializeUser(authResponse: AuthResponse) {
     this._authenticatedUser = authResponse;
+  }
+
+  initializeRole(role: Role) {
+    this._authenticatedUserRole = role;
   }
 }

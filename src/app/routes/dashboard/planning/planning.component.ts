@@ -22,6 +22,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ReservationResponse } from '@/app/core/models/reservations';
+import { Role } from '@/app/core/models/staff';
 
 @Component({
   selector: 'planning',
@@ -34,6 +35,7 @@ export class PlanningComponent {
   openingForm!: FormGroup;
   auth: AuthResponse | null = null;
   restaurant: Number | null = null;
+  admin: Boolean | null = null;
   restaurantFull: Restaurant | null = null;
   restaurantResponse: RestaurantResponse[] = [];
   reservations: ReservationResponse[] = [];
@@ -102,6 +104,12 @@ export class PlanningComponent {
       this.restaurant = this.storageService.getSelectedRestaurant();
     } else {
       console.error('Restaurant non sélectionné dans le localStorage');
+    }
+
+    if (authService.getAuthenticatedUserRole()) {
+      this.admin = this.authService.isAdmin();
+    } else {
+      console.error('Role non présent dans le localStorage');
     }
 
     this.openingForm = this.formBuilder.group({

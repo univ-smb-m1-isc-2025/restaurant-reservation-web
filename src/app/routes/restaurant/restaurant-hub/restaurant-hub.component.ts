@@ -7,6 +7,7 @@ import { RestaurantService } from '@/app/core/services/restaurant.service';
 import { RestaurantResponse } from '@/app/core/models/restaurant';
 import { StorageService } from '@/app/core/services/storage.service';
 import { AppbarComponent } from "@/app/shared/components/appbar/appbar.component";
+import { Role } from '@/app/core/models/staff';
 
 
 @Component({
@@ -52,9 +53,11 @@ export class RestaurantHubComponent {
     this.router.navigate(['/restaurants/creation']);
   }
 
-  goToDashboard(restaurant: number) {
+  goToDashboard(restaurant: number, role: Role) {
     this.storageService.saveSelectedRestaurant(restaurant);
+    this.storageService.saveRole(role);
     this.restaurantService.initializeRestaurant(restaurant);
+    this.authService.initializeRole(role),
     this.router.navigate(['/dashboard']);
   }
 }
