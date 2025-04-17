@@ -2,7 +2,7 @@ import { Restaurant } from "./restaurant";
 
 export interface Customer {
   id: number;
-  phone: string;
+  email: string;
   creationDate: string;
 }
 
@@ -16,7 +16,7 @@ export interface ReservationResponse {
 
 export interface CreateReservationRequest {
   reservationDate: string;
-  customerPhone: string;
+  email: string;
   nbGuests: number;
 }
 

@@ -32,7 +32,7 @@ export class ReservationComponent {
     ) {
       this.reservationForm = this.formBuilder.group({
         reservationDate: ['', [Validators.required]],
-        customerPhone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+        email: ['', [Validators.required, Validators.email]],
         nbGuests: ['', [Validators.required, Validators.min(1)]],
       });
 
