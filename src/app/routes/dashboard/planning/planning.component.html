@@ -72,7 +72,7 @@
                                 <div>
                                     <h2 class="text-onSurface text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
                                     <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
-                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.email }}</p>
                                 </div>
                                 <div class="flex gap-4">
                                     <button (click)="cancelReservation(reservation.id)" class="bg-error w-24 h-12 md:w-12 md:h-8 text-onError text-2xl rounded-lg">-</button>
@@ -84,7 +84,7 @@
                                 <div>
                                     <h2 class="text-disabled text-lg line-through font-bold ">Réservation n° {{ reservation.id }}</h2>
                                     <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
-                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.email }}</p>
                                 </div>
                             }  
                             
@@ -92,7 +92,7 @@
                                 <div>
                                     <h2 class="text-primary text-lg font-bold">Réservation n° {{ reservation.id }}</h2>
                                     <p class="text-onSurface text-sm">Réservé le {{ reservation.reservationDate | date: 'dd/MM/yyy à HH:mm' }} pour {{ reservation.nbGuests }} personnes</p>
-                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.phone }}</p>
+                                    <p class="text-onSurface text-sm">Contact client : {{ reservation.customer.email }}</p>
                                 </div>
                             } 
                         </div>
