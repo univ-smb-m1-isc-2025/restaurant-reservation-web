@@ -11,6 +11,7 @@ import { ReservationService } from '@/app/core/services/reservation.service';
 import { SidebarComponent } from "@/app/shared/components/sidebar/sidebar.component";
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ToastService } from '@/app/core/services/toast.service';
@@ -58,8 +59,8 @@ export class PlanningComponent {
   ];
 
   calendarOptions: CalendarOptions = {
-    plugins: [timeGridPlugin, interactionPlugin],
-    initialView: 'timeGridWeek',
+    plugins: [timeGridPlugin, interactionPlugin, listPlugin],
+    initialView: this.getInitialView(),
     locale: 'fr',
     slotMinTime: '08:00:00',
     slotMaxTime: '24:00:00',
@@ -75,14 +76,14 @@ export class PlanningComponent {
     headerToolbar: {
       left: 'prev,next today',
       center: '',
-      right: 'title',
+      right: 'title'
     },
     eventDidMount: (info) => {
       if (!this.calendarApi) {
         this.calendarApi = info.view.calendar;
       }
     }
-  };
+  };  
 
   constructor(
     private router: Router,
@@ -119,6 +120,10 @@ export class PlanningComponent {
     });
 
     this.fetchRestaurant();
+  }
+
+  getInitialView(): 'timeGridWeek' | 'listWeek' {
+    return window.innerWidth < 768 ? 'listWeek' : 'timeGridWeek';
   }
 
   generateEvents(): EventInput[] {
